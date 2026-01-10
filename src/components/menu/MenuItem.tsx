@@ -1,57 +1,78 @@
+'use client';
+
 import Image from "next/image";
 import { ShoppingCart } from "lucide-react";
+import { useState } from "react";
+import AddToCartModal from "@/components/menu/AddToCartModal";
 
-type Props = {
+type MenuItemType = {
+  _id: string;
   name: string;
-  image?: string;
+  image: string;
   description: string;
   basePrice: number;
+  sizes?: any[];
+  extras?: any[];
 };
 
 const FALLBACK_IMAGE = "/pizza.webp";
 
-export default function MenuItem({
-  name,
-  image,
-  description,
-  basePrice,
-}: Props) {
+export default function MenuItem(item: MenuItemType) {
+  const [open, setOpen] = useState(false);
+
   const imageSrc =
-    image && image.startsWith("http")
-      ? image
+    item.image && item.image.startsWith("http")
+      ? item.image
       : FALLBACK_IMAGE;
 
   return (
-    <div className="relative bg-white rounded-2xl shadow-md p-6 text-center">
+    <>
+      {/* CARD */}
+      <div className="relative bg-white rounded-2xl shadow-md p-6 text-center hover:shadow-xl transition">
 
-      {/* PRICE */}
-      <div className="absolute top-4 right-4 bg-red-600 text-white text-sm font-bold px-3 py-1 rounded-full">
-        ₹{basePrice}
+        {/* PRICE */}
+        <div className="absolute top-4 right-4 bg-red-600 text-white text-sm font-bold px-3 py-1 rounded-full">
+          ₹{item.basePrice}
+        </div>
+
+        {/* IMAGE */}
+        <div className="h-[220px] flex items-center justify-center">
+          <Image
+            src={imageSrc}
+            alt="image"
+            width={300}
+            height={300}
+            className="object-contain"
+          />
+        </div>
+
+        {/* NAME */}
+        <h4 className="mt-4 text-lg font-extrabold text-red-600">
+          {item.name}
+        </h4>
+
+        {/* DESCRIPTION */}
+        <p className="mt-2 text-sm text-gray-600 line-clamp-3">
+          {item.description}
+        </p>
+
+        {/* BUTTON */}
+        <button
+          onClick={() => setOpen(true)}
+          className="mt-5 w-full flex items-center justify-center gap-2 bg-red-600 text-white py-2.5 rounded-full font-semibold hover:bg-red-700 transition"
+        >
+          <ShoppingCart size={18} />
+          Add to Cart
+        </button>
       </div>
 
-      {/* IMAGE */}
-      <div className="h-[220px] flex items-center justify-center">
-        <Image
-          src={imageSrc}
-          alt={name || "Menu item"}
-          width={300}
-          height={300}
-          className="object-contain"
+      {/* MODAL */}
+      {open && (
+        <AddToCartModal
+          item={item}
+          onClose={() => setOpen(false)}
         />
-      </div>
-
-      <h4 className="mt-4 text-lg font-extrabold text-red-600">
-        {name}
-      </h4>
-
-      <p className="mt-2 text-sm text-gray-600 line-clamp-3">
-        {description}
-      </p>
-
-      <button className="mt-5 w-full flex items-center justify-center gap-2 bg-red-600 text-white py-2.5 rounded-full font-semibold">
-        <ShoppingCart size={18} />
-        Add to Cart
-      </button>
-    </div>
+      )}
+    </>
   );
 }

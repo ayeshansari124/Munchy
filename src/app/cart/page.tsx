@@ -4,10 +4,17 @@ import Image from "next/image";
 import { Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useCart } from "@/context/CartContext";
+import { useRouter } from "next/navigation";
 
+declare global {
+  interface Window {
+    Razorpay: any;
+  }
+}
 
 const CartPage = () => {
-  const { items, removeItem } = useCart();
+  const { items, removeItem, clearCart } = useCart();
+  const router = useRouter();
 
   /* ---------------- USER INFO ---------------- */
   const [phone, setPhone] = useState("");
@@ -35,6 +42,63 @@ const CartPage = () => {
   const delivery = items.length ? 5 : 0;
   const total = subtotal + delivery;
 
+  /* ---------------- PAYMENT ---------------- */
+  async function handlePay() {
+    if (items.length === 0) {
+      alert("Cart is empty");
+      return;
+    }
+
+    const res = await fetch("/api/razorpay/order", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ amount: total }),
+    });
+
+    const order = await res.json();
+
+    const options = {
+      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+      amount: order.amount,
+      currency: "INR",
+      name: "MunchY",
+      description: "Food Order",
+      order_id: order.id,
+      handler: async function (response) {
+  await fetch("/api/orders", {
+    method: "POST",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      items,
+      total,
+      address: {
+        phone,
+        street,
+        city,
+        postalCode,
+        country,
+      },
+      paymentId: response.razorpay_payment_id,
+    }),
+  });
+
+  clearCart();
+  router.push("/");
+}
+,
+      prefill: {
+        contact: phone,
+      },
+      theme: {
+        color: "#dc2626",
+      },
+    };
+
+    const rzp = new window.Razorpay(options);
+    rzp.open();
+  }
+
   return (
     <section className="max-w-6xl mx-auto px-6 py-10 grid md:grid-cols-2 gap-10">
 
@@ -46,9 +110,11 @@ const CartPage = () => {
           <p className="text-gray-500">Your cart is empty</p>
         )}
 
-        {items.map((item, i) => (
-          <div key={i} className="flex items-center gap-4 mb-4 border-b pb-4">
-
+        {items.map(item => (
+          <div
+            key={item.cartId}
+            className="flex items-center gap-4 mb-4 border-b pb-4"
+          >
             <Image
               src={item.image}
               alt={item.name}
@@ -66,7 +132,7 @@ const CartPage = () => {
                 </p>
               )}
 
-              {item.selectedExtras?.map((e: any) => (
+              {item.selectedExtras?.map(e => (
                 <p key={e.name} className="text-sm text-gray-500">
                   + {e.name} ₹{e.price}
                 </p>
@@ -75,10 +141,9 @@ const CartPage = () => {
 
             <p className="font-bold">₹{item.finalPrice}</p>
 
-           <button onClick={() => removeItem(item.cartId)}>
-  <Trash2 className="text-gray-400 hover:text-red-600" />
-</button>
-
+            <button onClick={() => removeItem(item.cartId)}>
+              <Trash2 className="text-gray-400 hover:text-red-600" />
+            </button>
           </div>
         ))}
 
@@ -96,14 +161,14 @@ const CartPage = () => {
 
         <input
           value={phone}
-          onChange={(e) => setPhone(e.target.value)}
+          onChange={e => setPhone(e.target.value)}
           className="w-full mb-3 px-4 py-2 rounded-lg border"
           placeholder="Phone"
         />
 
         <input
           value={street}
-          onChange={(e) => setStreet(e.target.value)}
+          onChange={e => setStreet(e.target.value)}
           className="w-full mb-3 px-4 py-2 rounded-lg border"
           placeholder="Street address"
         />
@@ -111,14 +176,14 @@ const CartPage = () => {
         <div className="flex gap-3 mb-3">
           <input
             value={postalCode}
-            onChange={(e) => setPostalCode(e.target.value)}
+            onChange={e => setPostalCode(e.target.value)}
             className="w-full px-4 py-2 rounded-lg border"
             placeholder="Postal code"
           />
 
           <input
             value={city}
-            onChange={(e) => setCity(e.target.value)}
+            onChange={e => setCity(e.target.value)}
             className="w-full px-4 py-2 rounded-lg border"
             placeholder="City"
           />
@@ -126,12 +191,15 @@ const CartPage = () => {
 
         <input
           value={country}
-          onChange={(e) => setCountry(e.target.value)}
+          onChange={e => setCountry(e.target.value)}
           className="w-full mb-4 px-4 py-2 rounded-lg border"
           placeholder="Country"
         />
 
-        <button className="w-full bg-red-600 text-white py-3 rounded-full font-bold hover:bg-red-700">
+        <button
+          onClick={handlePay}
+          className="w-full bg-red-600 text-white py-3 rounded-full font-bold hover:bg-red-700"
+        >
           Pay ₹{total}
         </button>
       </div>

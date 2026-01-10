@@ -34,12 +34,8 @@ const MenuPage = () => {
             <div className="flex gap-6 overflow-x-auto pb-4">
               {items.map((item: any) => (
                 <div key={item._id} className="min-w-[280px]">
-                  <MenuItem
-  name={item.name}
-  image={item.image}
-  description={item.description}
-  basePrice={item.basePrice}
-/>
+                  <MenuItem {...item} />
+
 
                 </div>
               ))}

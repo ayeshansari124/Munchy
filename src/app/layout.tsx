@@ -16,6 +16,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      
       <body className="max-w-6xl mx-auto">
         <CartProvider>
           <Header />
@@ -24,6 +25,7 @@ export default function RootLayout({
         </CartProvider>
 
         <Toaster position="top-right" />
+        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
       </body>
     </html>
   );
