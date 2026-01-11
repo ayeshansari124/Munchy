@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { ShoppingCart } from "lucide-react";
 import { useState } from "react";
-import AddToCartModal from "@/components/menu/AddToCartModal";
+import AddToCartModal from "@/components/cart/AddToCartModal";
 
 type MenuItemType = {
   _id: string;
@@ -27,36 +27,30 @@ export default function MenuItem(item: MenuItemType) {
 
   return (
     <>
-      {/* CARD */}
       <div className="relative bg-white rounded-2xl shadow-md p-6 text-center hover:shadow-xl transition">
 
-        {/* PRICE */}
         <div className="absolute top-4 right-4 bg-red-600 text-white text-sm font-bold px-3 py-1 rounded-full">
           ₹{item.basePrice}
         </div>
 
-        {/* IMAGE */}
         <div className="h-[220px] flex items-center justify-center">
           <Image
             src={imageSrc}
-            alt="image"
+            alt={item.name}
             width={300}
             height={300}
             className="object-contain"
           />
         </div>
 
-        {/* NAME */}
         <h4 className="mt-4 text-lg font-extrabold text-red-600">
           {item.name}
         </h4>
 
-        {/* DESCRIPTION */}
         <p className="mt-2 text-sm text-gray-600 line-clamp-3">
           {item.description}
         </p>
 
-        {/* BUTTON */}
         <button
           onClick={() => setOpen(true)}
           className="mt-5 w-full flex items-center justify-center gap-2 bg-red-600 text-white py-2.5 rounded-full font-semibold hover:bg-red-700 transition"
@@ -66,7 +60,6 @@ export default function MenuItem(item: MenuItemType) {
         </button>
       </div>
 
-      {/* MODAL */}
       {open && (
         <AddToCartModal
           item={item}

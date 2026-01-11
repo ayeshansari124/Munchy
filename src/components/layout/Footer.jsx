@@ -2,11 +2,9 @@ const Footer = () => {
   return (
     <footer className="bg-white border-t border-gray-200 py-6">
       <div className="max-w-7xl mx-auto px-6 text-center text-sm text-gray-600">
-        © 2024{" "}
-        <span className="font-semibold text-red-600">
-          munchy
-        </span>
-        . All rights reserved.
+        © {new Date().getFullYear()}{" "}
+        <span className="font-semibold text-red-600">MunchY</span>.
+        All rights reserved.
       </div>
     </footer>
   );

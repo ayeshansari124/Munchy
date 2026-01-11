@@ -8,12 +8,10 @@ export function useUser() {
 
   useEffect(() => {
     fetch("/api/me", { credentials: "include" })
-      .then(res => res.json())
-      .then(data => {
-        setUser(data);
-        setLoading(false);
-      });
+      .then(r => r.ok ? r.json() : null)
+      .then(setUser)
+      .finally(() => setLoading(false));
   }, []);
 
-  return { user, loading, setUser };
+  return { user, setUser, loading };
 }

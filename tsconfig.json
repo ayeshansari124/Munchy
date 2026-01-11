@@ -33,6 +33,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-, "src/components/layout/Hero.tsx"  ],
+, "src/components/layout/Hero.tsx", "src/components/layout/SectionHeaders.jsx"  ],
   "exclude": ["node_modules"]
 }

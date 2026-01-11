@@ -2,10 +2,9 @@
 
 import { ChevronDown } from "lucide-react";
 import { useEffect, useState } from "react";
-import SizesEditor from "@components/admin/SizesEditor";
-import ExtrasEditor from "@components/admin/ExtrasEditor";
 import toast from "react-hot-toast";
-
+import SizesEditor from "@/components/menu/SizesEditor";
+import ExtrasEditor from "@/components/menu/ExtrasEditor";
 type Category = {
   _id: string;
   name: string;

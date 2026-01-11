@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import AdminMenuItemCard from "@/components/admin/AdminMenuItemCard";
-import MenuItemForm from "@/components/admin/MenuItemForm";
+import MenuItemForm from "@/components/menu/MenuItemForm";
 import toast from "react-hot-toast";
 
 export default function AdminMenuPage() {
