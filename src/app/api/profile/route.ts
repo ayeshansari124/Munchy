@@ -1,49 +1,19 @@
-import jwt from "jsonwebtoken";
-import mongoose from "mongoose";
-import User from "@models/User";
+import { connectDB } from "@/lib/db";
+import { requireUser } from "@/lib/auth";
+import User from "@/models/User";
+import { NextResponse } from "next/server";
 
 export async function PUT(req: Request) {
-  try {
-    const { name, phone, address, role } = await req.json();
+  const user = await requireUser();
+  const { name, phone, address } = await req.json();
 
-    const cookie = req.headers.get("cookie");
-    if (!cookie) {
-      return new Response(JSON.stringify({ message: "Unauthorized" }), { status: 401 });
-    }
+  await connectDB();
 
-    const token = cookie
-      .split("; ")
-      .find(row => row.startsWith("token="))
-      ?.split("=")[1];
+  const updated = await User.findByIdAndUpdate(
+    user._id,
+    { name, phone, address },
+    { new: true, runValidators: true }
+  ).select("name email phone address role");
 
-    if (!token) {
-      return new Response(JSON.stringify({ message: "Unauthorized" }), { status: 401 });
-    }
-
-    const decoded: any = jwt.verify(token, process.env.JWT_SECRET!);
-
-    await mongoose.connect(process.env.MONGO_URI!);
-
-    const updatedUser = await User.findByIdAndUpdate(
-  decoded.id,
-  {
-    $set: {
-      name,
-      phone,
-      address,
-      role,
-    },
-  },
-  {
-    new: true,
-    runValidators: true,
-  }
-).select("name email phone address role");
-
-    return new Response(JSON.stringify(updatedUser), { status: 200 });
-
-  } catch (error) {
-    console.error("PROFILE UPDATE ERROR:", error);
-    return new Response(JSON.stringify({ message: "Something went wrong" }), { status: 500 });
-  }
+  return NextResponse.json(updated);
 }

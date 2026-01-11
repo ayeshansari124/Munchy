@@ -1,17 +1,36 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export function useUser() {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetch("/api/me", { credentials: "include" })
-      .then(r => r.ok ? r.json() : null)
-      .then(setUser)
-      .finally(() => setLoading(false));
+  const fetchUser = useCallback(async () => {
+    setLoading(true);
+
+    const res = await fetch("/api/auth/me", {
+      credentials: "include",
+    });
+
+    if (!res.ok) {
+      setUser(null);
+    } else {
+      const data = await res.json();
+      setUser(data && data._id ? data : null);
+    }
+
+    setLoading(false);
   }, []);
 
-  return { user, setUser, loading };
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser]);
+
+  return {
+    user,
+    loading,
+    setUser,
+    fetchUser,
+  };
 }

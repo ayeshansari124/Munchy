@@ -1,65 +1,44 @@
-import mongoose from "mongoose";
-import { NextResponse } from "next/server";
-import Item from "@models/Item";
+import { connectDB } from "@/lib/db";
+import Item from "@/models/Item";
+import { ok, fail } from "@/lib/response";
+import { requireAdmin } from "@/lib/auth";
 
-async function connectDB() {
-  if (mongoose.connection.readyState === 1) return;
-  await mongoose.connect(process.env.MONGO_URI!);
-}
-
-/* ---------------- GET ALL ITEMS ---------------- */
 export async function GET() {
   await connectDB();
-
-  const items = await Item.find()
-    .sort({ createdAt: -1 }); // 🔥 latest first
-
-  return NextResponse.json(items);
+  const items = await Item.find();
+  return ok(items);
 }
 
-
-/* ---------------- CREATE ITEM ---------------- */
 export async function POST(req: Request) {
-  await connectDB();
-  const data = await req.json();
-
-  const item = await Item.create(data);
-  return NextResponse.json(item, { status: 201 });
+  try {
+    await requireAdmin();
+    const body = await req.json();
+    await connectDB();
+    await Item.create(body);
+    return ok({ message: "Item created" });
+  } catch {
+    return fail("Unauthorized", 401);
+  }
 }
 
-/* ---------------- UPDATE ITEM ---------------- */
 export async function PUT(req: Request) {
-  await connectDB();
-  const { id, ...data } = await req.json();
-
-  if (!id) {
-    return NextResponse.json(
-      { message: "Item ID missing" },
-      { status: 400 }
-    );
+  try {
+    await requireAdmin();
+    const { id, ...data } = await req.json();
+    await Item.findByIdAndUpdate(id, data);
+    return ok({ message: "Item updated" });
+  } catch {
+    return fail("Unauthorized", 401);
   }
-
-  const updated = await Item.findByIdAndUpdate(
-    id,
-    data,
-    { new: true }
-  );
-
-  return NextResponse.json(updated);
 }
 
-/* ---------------- DELETE ITEM ---------------- */
 export async function DELETE(req: Request) {
-  await connectDB();
-  const { id } = await req.json();
-
-  if (!id) {
-    return NextResponse.json(
-      { message: "Item ID missing" },
-      { status: 400 }
-    );
+  try {
+    await requireAdmin();
+    const { id } = await req.json();
+    await Item.findByIdAndDelete(id);
+    return ok({ message: "Item deleted" });
+  } catch {
+    return fail("Unauthorized", 401);
   }
-
-  await Item.findByIdAndDelete(id);
-  return NextResponse.json({ success: true });
 }

@@ -1,15 +1,12 @@
 import Razorpay from "razorpay";
-import { NextResponse } from "next/server";
+import { ok, fail } from "@/lib/response";
 
 export async function POST(req: Request) {
   try {
     const { amount } = await req.json();
 
-    if (!amount) {
-      return NextResponse.json(
-        { error: "Amount is required" },
-        { status: 400 }
-      );
+    if (!amount || amount <= 0) {
+      return fail("Valid amount required");
     }
 
     const razorpay = new Razorpay({
@@ -18,17 +15,14 @@ export async function POST(req: Request) {
     });
 
     const order = await razorpay.orders.create({
-      amount: amount * 100, // convert ₹ → paise
+      amount: amount * 100,
       currency: "INR",
       receipt: `receipt_${Date.now()}`,
     });
 
-    return NextResponse.json(order);
+    return ok(order);
   } catch (err) {
-    console.error("Razorpay error:", err);
-    return NextResponse.json(
-      { error: "Failed to create Razorpay order" },
-      { status: 500 }
-    );
+    console.error("RAZORPAY ERROR:", err);
+    return fail("Failed to create Razorpay order", 500);
   }
 }

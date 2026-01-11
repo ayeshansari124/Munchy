@@ -1,10 +1,14 @@
 import { InputHTMLAttributes } from "react";
 
-type InputProps = InputHTMLAttributes<HTMLInputElement> & {
+type InputProps = Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  "onChange"
+> & {
   label: string;
+  onChange?: (value: string) => void;
 };
 
-export default function Input({ label, ...props }: InputProps) {
+export default function Input({ label, onChange, ...props }: InputProps) {
   return (
     <div className="w-full">
       <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -13,6 +17,8 @@ export default function Input({ label, ...props }: InputProps) {
 
       <input
         {...props}
+        value={props.value ?? ""}
+        onChange={(e) => onChange?.(e.target.value)}
         className="
           w-full
           rounded-lg

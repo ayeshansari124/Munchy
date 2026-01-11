@@ -1,42 +1,18 @@
-import mongoose from "mongoose";
+import { connectDB } from "@/lib/db";
 import Order from "@/models/Order";
-import jwt from "jsonwebtoken";
+import { ok, fail } from "@/lib/response";
+import { requireAdmin } from "@/lib/auth";
 
-export async function GET(req: Request) {
+export async function GET() {
   try {
-    const cookie = req.headers.get("cookie");
-    if (!cookie) {
-      return new Response("Unauthorized", { status: 401 });
-    }
-
-    const token = cookie
-      .split("; ")
-      .find(c => c.startsWith("token="))
-      ?.split("=")[1];
-
-    if (!token) {
-      return new Response("Unauthorized", { status: 401 });
-    }
-
-    const decoded: any = jwt.verify(
-      token,
-      process.env.JWT_SECRET!
-    );
-
-    // ✅ ADMIN CHECK (CRITICAL)
-    if (decoded.role !== "admin") {
-      return new Response("Forbidden", { status: 403 });
-    }
-
-    await mongoose.connect(process.env.MONGO_URI!);
-
+    await requireAdmin();
+    await connectDB();
     const orders = await Order.find()
-      .populate("user", "name email")
+      .populate("user", "name")
       .sort({ createdAt: -1 });
 
-    return Response.json(orders);
-  } catch (err) {
-    console.error("ADMIN ORDERS ERROR:", err);
-    return new Response("Server error", { status: 500 });
+    return ok(orders);
+  } catch {
+    return fail("Unauthorized", 401);
   }
 }

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
+    "bcryptjs": "^3.0.3",
     "cloudinary": "^2.8.0",
     "console": "^0.7.2",
     "json-schema": "^0.4.0",

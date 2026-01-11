@@ -1,32 +1,27 @@
 export const runtime = "nodejs";
 
 import cloudinary from "@/lib/cloudinary";
+import { ok, fail } from "@/lib/response";
 
 export async function POST(req: Request) {
   try {
     const formData = await req.formData();
-    const file = formData.get("file") as File;
+    const file = formData.get("file") as File | null;
 
-    if (!file) {
-      return new Response("No file", { status: 400 });
-    }
+    if (!file) return fail("No file provided");
 
     const buffer = Buffer.from(await file.arrayBuffer());
 
     const result: any = await new Promise((resolve, reject) => {
       cloudinary.uploader.upload_stream(
         { folder: "menu-items" },
-        (err, res) => {
-          if (err) reject(err);
-          else resolve(res);
-        }
+        (err, res) => (err ? reject(err) : resolve(res))
       ).end(buffer);
     });
 
-    return Response.json({ url: result.secure_url });
-
+    return ok({ url: result.secure_url });
   } catch (err) {
-    console.error("UPLOAD FAILED:", err);
-    return new Response("Upload failed", { status: 500 });
+    console.error("UPLOAD ERROR:", err);
+    return fail("Upload failed", 500);
   }
 }

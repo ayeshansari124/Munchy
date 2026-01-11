@@ -22,7 +22,7 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const res = await fetch("/api/login", {
+      const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -56,21 +56,19 @@ export default function LoginPage() {
 
         {/* FORM */}
         <form onSubmit={handleSubmit} className="space-y-4">
-          <Input
-            label="Email"
-            type="email"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-            required
-          />
+          <Input label="Email"
+  type="email"
+  value={email}
+  onChange={value => setEmail(value)}
+/>
 
-          <Input
-            label="Password"
-            type="password"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-            required
-          />
+
+         <Input label="Password"
+  type="password"
+  value={password}
+  onChange={value => setPassword(value)}
+/>
+
 
           <button
             disabled={loading}
