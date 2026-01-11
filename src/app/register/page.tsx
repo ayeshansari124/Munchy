@@ -1,12 +1,16 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import Image from "next/image";
+import Link from "next/link";
 
-const RegisterPage = () => {
+import Card from "@/components/ui/Card";
+import Input from "@/components/ui/Input";
+import Divider from "@/components/ui/Divider";
+
+export default function RegisterPage() {
   const router = useRouter();
 
   const [name, setName] = useState("");
@@ -18,126 +22,84 @@ const RegisterPage = () => {
     e.preventDefault();
     setLoading(true);
 
-    const res = await fetch("/api/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, password }),
-    });
+    try {
+      const res = await fetch("/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password }),
+      });
 
-    setLoading(false);
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.message || "Registration failed");
+      }
 
-    if (res.ok) {
-      toast.success("Account created successfully 🎉");
+      toast.success("Account created 🎉");
       router.push("/");
-    } else {
-      const data = await res.json();
-      toast.error(data.message || "Registration failed");
+    } catch (err: any) {
+      toast.error(err.message);
+    } finally {
+      setLoading(false);
     }
   }
 
   return (
-    <section className="min-h-screen flex items-center justify-center bg-white px-4">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8">
-        {/* HEADER */}
+    <section className="min-h-screen flex items-center justify-center px-4">
+      <Card className="max-w-md">
+
         <div className="text-center mb-6">
-          <h1 className="text-3xl font-extrabold text-gray-900">
-            Create your account
-          </h1>
-          <p className="text-sm text-gray-500 mt-2">
-            Sign up to order your favorite food 🍕
+          <h1 className="text-3xl font-extrabold">Create account</h1>
+          <p className="text-sm text-gray-500 mt-1">
+            Sign up to order 🍕
           </p>
         </div>
 
-        {/* FORM */}
         <form onSubmit={handleSubmit} className="space-y-4">
           <Input
             label="Name"
-            type="text"
             value={name}
-            onChange={setName}
-            placeholder="John Doe"
+            onChange={e => setName(e.target.value)}
+            required
           />
 
           <Input
             label="Email"
             type="email"
             value={email}
-            onChange={setEmail}
-            placeholder="you@example.com"
+            onChange={e => setEmail(e.target.value)}
+            required
           />
 
           <Input
             label="Password"
             type="password"
             value={password}
-            onChange={setPassword}
-            placeholder="••••••••"
+            onChange={e => setPassword(e.target.value)}
+            required
           />
 
           <button
-            type="submit"
             disabled={loading}
-            className="w-full bg-red-600 text-white py-3 rounded-full font-semibold hover:bg-red-700 transition disabled:opacity-60"
+            className="w-full bg-red-600 text-white py-3 rounded-full font-semibold hover:bg-red-700 disabled:opacity-60"
           >
             {loading ? "Creating account..." : "Register"}
           </button>
         </form>
 
-        {/* DIVIDER */}
         <Divider />
 
-        {/* GOOGLE LOGIN */}
-        <GoogleButton />
+        <button className="w-full flex items-center justify-center gap-3 border rounded-full py-3 text-sm hover:bg-gray-100">
+          <Image src="/google.png" alt="Google" width={20} height={20} />
+          Continue with Google
+        </button>
 
-        {/* FOOTER */}
-        <FooterText
-          text="Already have an account?"
-          linkText="Login"
-          href="/login"
-        />
-      </div>
+        <p className="text-sm text-center text-gray-600 mt-6">
+          Already have an account?{" "}
+          <Link href="/login" className="text-red-600 font-medium hover:underline">
+            Login
+          </Link>
+        </p>
+      </Card>
     </section>
   );
-};
-
-export default RegisterPage;
-
-const Input = ({ label, type, value, onChange, placeholder }: any) => (
-  <div>
-    <label className="block text-sm font-medium text-gray-700 mb-1">
-      {label}
-    </label>
-    <input
-      type={type}
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      placeholder={placeholder}
-      required
-      className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm focus:ring-2 focus:ring-red-500"
-    />
-  </div>
-);
-
-const Divider = () => (
-  <div className="my-6 flex items-center gap-4">
-    <div className="flex-1 h-px bg-gray-200" />
-    <span className="text-sm text-gray-400">OR</span>
-    <div className="flex-1 h-px bg-gray-200" />
-  </div>
-);
-
-const GoogleButton = () => (
-  <button className="w-full flex items-center justify-center gap-3 border border-gray-300 rounded-full py-3 text-sm font-medium hover:bg-gray-100 transition">
-    <Image src="/google.png" alt="Google" width={20} height={20} />
-    Continue with Google
-  </button>
-);
-
-const FooterText = ({ text, linkText, href }: any) => (
-  <p className="text-sm text-center text-gray-600 mt-6">
-    {text}{" "}
-    <Link href={href} className="text-red-600 font-medium hover:underline">
-      {linkText}
-    </Link>
-  </p>
-);
+}

@@ -1,19 +1,12 @@
-import AdminCapsules from "../../components/admin/AdminCapsules";
-
-const AdminPage = () => {
+export default function AdminPage() {
   return (
-    <section className="max-w-7xl mx-auto px-6 py-10">
-      {/* <h1 className="text-2xl font-bold text-center mb-6">
+    <div className="text-center py-20">
+      <h1 className="text-3xl font-bold text-red-600">
         Admin Dashboard
-      </h1> */}
-
-      <AdminCapsules />
-
-      {/* <p className="text-center text-gray-500 mt-10">
-        Choose a section to manage.
-      </p> */}
-    </section>
+      </h1>
+      <p className="text-gray-500 mt-2">
+        Manage menu, categories & orders
+      </p>
+    </div>
   );
-};
-
-export default AdminPage;
+}

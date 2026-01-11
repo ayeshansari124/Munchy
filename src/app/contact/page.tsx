@@ -1,41 +1,31 @@
-import React from 'react'
-import SectionHeaders from '@/components/layout/SectionHeaders';
+import SectionHeaders from "@/components/layout/SectionHeaders";
+import PageSection from "@/components/layout/PageSection";
 
-const ContactPage = () => {
+export default function ContactPage() {
   return (
-    <section className="bg-white py-4">
-      <div className="max-w-5xl mx-auto px-6 text-center">
+    <PageSection>
+      <SectionHeaders subHeader="Contact Us" mainHeader="Get In Touch" />
 
-        <SectionHeaders
-          subHeader="Contact Us"
-          mainHeader="Get In Touch"
-        />
+      <p className="mt-8 text-lg text-gray-700 text-center">
+        Questions? Feedback? Cravings?
+      </p>
 
-        <p className="mt-8 text-lg text-gray-700">
-          Have a question, feedback, or craving something special?
-          We’d love to hear from you.
+      <div className="mt-10 text-center">
+        <p className="text-sm uppercase tracking-widest text-gray-500">
+          Call us
         </p>
 
-        <div className="mt-10">
-          <p className="text-sm text-gray-500 uppercase tracking-widest">
-            Call us
-          </p>
+        <a
+          href="tel:+919322061117"
+          className="block mt-2 text-3xl font-extrabold text-red-600 hover:text-red-700"
+        >
+          +91 93220 61117
+        </a>
 
-          <a
-            href="tel:+919322061117"
-            className="mt-2 inline-block text-3xl font-extrabold text-red-600 hover:text-red-700 transition"
-          >
-            +91 93220 61117
-          </a>
-        </div>
-
-        <p className="mt-6 text-gray-600">
-          Available every day from <span className="font-medium">10 AM – 11 PM</span>
+        <p className="mt-4 text-gray-600">
+          Available 10 AM – 11 PM
         </p>
-
       </div>
-    </section>
+    </PageSection>
   );
 }
-
-export default ContactPage
