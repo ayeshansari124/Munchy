@@ -1,9 +1,6 @@
 import { InputHTMLAttributes } from "react";
 
-type InputProps = Omit<
-  InputHTMLAttributes<HTMLInputElement>,
-  "onChange"
-> & {
+type InputProps = Omit<InputHTMLAttributes<HTMLInputElement>, "onChange"> & {
   label: string;
   onChange?: (value: string) => void;
 };

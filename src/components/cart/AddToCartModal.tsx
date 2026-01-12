@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import Image from "next/image";
 import { X } from "lucide-react";
@@ -29,14 +29,14 @@ export default function AddToCartModal({
   const finalPrice = useMemo(() => {
     let price = item.basePrice;
     if (selectedSize) price += selectedSize.price;
-    selectedExtras.forEach(e => (price += e.price));
+    selectedExtras.forEach((e) => (price += e.price));
     return price;
   }, [item.basePrice, selectedSize, selectedExtras]);
 
   function toggleExtra(extra: any) {
-    setSelectedExtras(prev =>
-      prev.some(e => e.name === extra.name)
-        ? prev.filter(e => e.name !== extra.name)
+    setSelectedExtras((prev) =>
+      prev.some((e) => e.name === extra.name)
+        ? prev.filter((e) => e.name !== extra.name)
         : [...prev, extra]
     );
   }
@@ -61,7 +61,6 @@ export default function AddToCartModal({
   return (
     <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center px-4">
       <div className="bg-white max-w-lg w-full rounded-2xl p-6 relative">
-
         <button onClick={onClose} className="absolute top-4 right-4">
           <X />
         </button>
@@ -113,10 +112,12 @@ export default function AddToCartModal({
                   key={e.name}
                   className="flex justify-between items-center border rounded-lg px-4 py-2 cursor-pointer"
                 >
-                  <span>{e.name} (+₹{e.price})</span>
+                  <span>
+                    {e.name} (+₹{e.price})
+                  </span>
                   <input
                     type="checkbox"
-                    checked={selectedExtras.some(x => x.name === e.name)}
+                    checked={selectedExtras.some((x) => x.name === e.name)}
                     onChange={() => toggleExtra(e)}
                   />
                 </label>

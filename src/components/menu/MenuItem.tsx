@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import Image from "next/image";
 import { ShoppingCart } from "lucide-react";
@@ -21,14 +21,11 @@ export default function MenuItem(item: MenuItemType) {
   const [open, setOpen] = useState(false);
 
   const imageSrc =
-    item.image && item.image.startsWith("http")
-      ? item.image
-      : FALLBACK_IMAGE;
+    item.image && item.image.startsWith("http") ? item.image : FALLBACK_IMAGE;
 
   return (
     <>
       <div className="relative bg-white rounded-2xl shadow-md p-6 text-center hover:shadow-xl transition">
-
         <div className="absolute top-4 right-4 bg-red-600 text-white text-sm font-bold px-3 py-1 rounded-full">
           ₹{item.basePrice}
         </div>
@@ -60,12 +57,7 @@ export default function MenuItem(item: MenuItemType) {
         </button>
       </div>
 
-      {open && (
-        <AddToCartModal
-          item={item}
-          onClose={() => setOpen(false)}
-        />
-      )}
+      {open && <AddToCartModal item={item} onClose={() => setOpen(false)} />}
     </>
   );
 }

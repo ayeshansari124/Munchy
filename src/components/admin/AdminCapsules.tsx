@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const CAPSULES = [
+const capsules = [
   { label: "Categories", href: "/admin/categories" },
   { label: "Menu", href: "/admin/menu" },
   { label: "Orders", href: "/admin/orders" },
@@ -14,7 +14,7 @@ export default function AdminCapsules() {
 
   return (
     <div className="flex flex-wrap justify-center gap-3 mt-6">
-      {CAPSULES.map(({ label, href }) => {
+      {capsules.map(({ label, href }) => {
         const active = pathname.startsWith(href);
 
         return (

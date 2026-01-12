@@ -1,10 +1,13 @@
 'use client';
 
-import { ChevronDown } from "lucide-react";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import SizesEditor from "@/components/menu/SizesEditor";
 import ExtrasEditor from "@/components/menu/ExtrasEditor";
+import Accordion from "@components/ui/Accordion";
+import Input from "@components/ui/Input";
+import Textarea from "../ui/TextArea";
+
 type Category = {
   _id: string;
   name: string;
@@ -22,7 +25,6 @@ const MenuItemForm = ({
   clearEditing,
 }: MenuItemFormProps) => {
   const [categories, setCategories] = useState<Category[]>([]);
-
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
@@ -37,14 +39,14 @@ const MenuItemForm = ({
   const [showSizes, setShowSizes] = useState(false);
   const [showExtras, setShowExtras] = useState(false);
 
-  /* ---------------- Fetch categories ---------------- */
+  //fetch
   useEffect(() => {
     fetch("/api/categories")
       .then(res => res.json())
       .then(setCategories);
   }, []);
 
-  /* ---------------- Autofill on edit ---------------- */
+  //edit
   useEffect(() => {
     if (!editingItem) return;
 
@@ -57,7 +59,7 @@ const MenuItemForm = ({
     setImagePreview(editingItem.image || null);
   }, [editingItem]);
 
-  /* -------- Auto open accordions when editing -------- */
+  //accordion when editing
   useEffect(() => {
     if (!editingItem) return;
 
@@ -65,7 +67,7 @@ const MenuItemForm = ({
     setShowExtras((editingItem.extras?.length ?? 0) > 0);
   }, [editingItem]);
 
-  /* ---------------- Image handling ---------------- */
+  //image
   function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -74,7 +76,7 @@ const MenuItemForm = ({
     setImagePreview(URL.createObjectURL(file));
   }
 
-  /* ---------------- Save item ---------------- */
+  //save item
   async function handleSave() {
     if (!name || !category || !basePrice) {
       toast.error("Please fill all required fields");
@@ -246,50 +248,3 @@ const MenuItemForm = ({
 };
 
 export default MenuItemForm;
-
-/* ---------------- UI helpers ---------------- */
-
-const Accordion = ({ title, open, toggle, children }: any) => (
-  <div className="border rounded-xl overflow-hidden">
-    <button
-      type="button"
-      onClick={toggle}
-      className="w-full flex justify-between items-center px-5 py-3 font-semibold bg-gray-50"
-    >
-      <span>{title}</span>
-      <ChevronDown className={`transition ${open ? "rotate-180" : ""}`} />
-    </button>
-
-    <div
-      className={`grid transition-all duration-300 ${
-        open ? "grid-rows-[1fr] p-5" : "grid-rows-[0fr]"
-      }`}
-    >
-      <div className="overflow-hidden">{children}</div>
-    </div>
-  </div>
-);
-
-const Input = ({ label, value, onChange, type = "text" }: any) => (
-  <div>
-    <label className="text-sm font-medium">{label}</label>
-    <input
-      type={type}
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      className="w-full border rounded-lg px-4 py-2.5 text-sm"
-    />
-  </div>
-);
-
-const Textarea = ({ label, value, onChange }: any) => (
-  <div>
-    <label className="text-sm font-medium">{label}</label>
-    <textarea
-      rows={5}
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      className="w-full border rounded-lg px-4 py-3 text-sm resize-none"
-    />
-  </div>
-);

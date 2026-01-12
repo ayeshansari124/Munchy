@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import Input from "@/components/ui/Input";
 
@@ -17,9 +17,7 @@ export default function CheckoutForm({
           key={field}
           label={field.toUpperCase()}
           value={address[field]}
-          onChange={(e) =>
-            setAddress({ ...address, [field]: e.target.value })
-          }
+          onChange={(value) => setAddress({ ...address, [field]: value })}
         />
       ))}
 
@@ -27,16 +25,12 @@ export default function CheckoutForm({
         <Input
           label="Postal Code"
           value={address.postalCode}
-          onChange={(e) =>
-            setAddress({ ...address, postalCode: e.target.value })
-          }
+          onChange={(value) => setAddress({ ...address, postalCode: value })}
         />
         <Input
           label="City"
           value={address.city}
-          onChange={(e) =>
-            setAddress({ ...address, city: e.target.value })
-          }
+          onChange={(value) => setAddress({ ...address, city: value })}
         />
       </div>
 

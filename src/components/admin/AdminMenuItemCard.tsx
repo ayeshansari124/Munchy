@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import Image from "next/image";
 import { Pencil, Trash2 } from "lucide-react";
@@ -9,14 +9,9 @@ type Props = {
   onDelete: (id: string) => void;
 };
 
-export default function AdminMenuItemCard({
-  item,
-  onEdit,
-  onDelete,
-}: Props) {
+export default function AdminMenuItemCard({ item, onEdit, onDelete }: Props) {
   return (
     <div className="relative w-[260px] bg-white rounded-2xl shadow hover:shadow-lg transition p-4">
-
       {/* ACTIONS */}
       <div className="absolute top-3 right-3 flex gap-2">
         <button
@@ -54,9 +49,7 @@ export default function AdminMenuItemCard({
         {item.description}
       </p>
 
-      <div className="mt-2 text-center font-semibold">
-        ₹{item.basePrice}
-      </div>
+      <div className="mt-2 text-center font-semibold">₹{item.basePrice}</div>
     </div>
   );
 }

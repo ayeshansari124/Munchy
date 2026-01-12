@@ -7,9 +7,7 @@ export default function PageSection({
 }) {
   return (
     <section className={`bg-white py-10 ${className}`}>
-      <div className="max-w-5xl mx-auto px-6">
-        {children}
-      </div>
+      <div className="max-w-5xl mx-auto px-6">{children}</div>
     </section>
   );
 }
