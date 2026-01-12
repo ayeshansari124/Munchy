@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
 import toast from "react-hot-toast";
+import { useUser } from "@/hooks/useUser";
 import { useState } from "react";
 import PageSection from "@/components/layout/PageSection";
 import Input from "@/components/ui/Input";
-import { useUser } from "@/hooks/useUser";
 
 export default function ProfilePage() {
- const { user, loading, fetchUser } = useUser();
+  const { user, loading, fetchUser } = useUser();
   const [editing, setEditing] = useState(false);
 
   const [form, setForm] = useState({
@@ -45,24 +45,22 @@ export default function ProfilePage() {
     setEditing(true);
   }
 
- async function saveProfile(e: React.FormEvent) {
-  e.preventDefault();
+  async function saveProfile(e: React.FormEvent) {
+    e.preventDefault();
 
-  const res = await fetch("/api/profile", {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    credentials: "include",
-    body: JSON.stringify(form),
-  });
+    const res = await fetch("/api/profile", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify(form),
+    });
 
-  if (!res.ok) return toast.error("Update failed");
+    if (!res.ok) return toast.error("Update failed");
 
-  await fetchUser(); // ✅ re-sync auth state from server
-  setEditing(false);
-  toast.success("Profile updated");
-}
-
-
+    await fetchUser();
+    setEditing(false);
+    toast.success("Profile updated");
+  }
 
   const fullAddress = [
     user.address?.street,
@@ -70,12 +68,13 @@ export default function ProfilePage() {
     user.address?.state,
     user.address?.postalCode,
     user.address?.country,
-  ].filter(Boolean).join(", ");
+  ]
+    .filter(Boolean)
+    .join(", ");
 
   return (
     <PageSection className="min-h-screen flex justify-center items-center">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8 space-y-6">
-
         {/* HEADER */}
         <div className="text-center">
           <h1 className="text-3xl font-bold">Your Profile</h1>
@@ -104,26 +103,24 @@ export default function ProfilePage() {
         {/* EDIT MODE */}
         {editing && (
           <form onSubmit={saveProfile} className="space-y-5">
-
             <Input
               label="Full Name"
               value={form.name}
-              onChange={v =>
-  setForm(prev => ({
-    ...prev,
-    address: {
-      ...prev.address,
-      street: v,
-    },
-  }))
-}
-
+              onChange={(v) =>
+                setForm((prev) => ({
+                  ...prev,
+                  address: {
+                    ...prev.address,
+                    street: v,
+                  },
+                }))
+              }
             />
 
             <Input
               label="Phone"
               value={form.phone}
-              onChange={v => setForm({ ...form, phone: v })}
+              onChange={(v) => setForm({ ...form, phone: v })}
             />
 
             {/* ADDRESS */}
@@ -132,68 +129,63 @@ export default function ProfilePage() {
                 Delivery Address
               </p>
 
-             <Input
-  label="Street"
-  value={form.address.street}
-  onChange={v =>
-    setForm(prev => ({
-      ...prev,
-      address: { ...prev.address, street: v },
-    }))
-  }
-/>
-
+              <Input
+                label="Street"
+                value={form.address.street}
+                onChange={(v) =>
+                  setForm((prev) => ({
+                    ...prev,
+                    address: { ...prev.address, street: v },
+                  }))
+                }
+              />
 
               <div className="grid grid-cols-2 gap-3">
                 <Input
-  label="City"
-  value={form.address.city}
-  onChange={v =>
-    setForm(prev => ({
-      ...prev,
-      address: { ...prev.address, city: v },
-    }))
-  }
-/>
-
+                  label="City"
+                  value={form.address.city}
+                  onChange={(v) =>
+                    setForm((prev) => ({
+                      ...prev,
+                      address: { ...prev.address, city: v },
+                    }))
+                  }
+                />
 
                 <Input
-  label="State"
-  value={form.address.state}
-  onChange={v =>
-    setForm(prev => ({
-      ...prev,
-      address: { ...prev.address, state: v },
-    }))
-  }
-/>
-
+                  label="State"
+                  value={form.address.state}
+                  onChange={(v) =>
+                    setForm((prev) => ({
+                      ...prev,
+                      address: { ...prev.address, state: v },
+                    }))
+                  }
+                />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
-               <Input
-  label="Postal"
-  value={form.address.postalCode}
-  onChange={v =>
-    setForm(prev => ({
-      ...prev,
-      address: { ...prev.address, postalCode: v },
-    }))
-  }
-/>
-
+                <Input
+                  label="Postal"
+                  value={form.address.postalCode}
+                  onChange={(v) =>
+                    setForm((prev) => ({
+                      ...prev,
+                      address: { ...prev.address, postalCode: v },
+                    }))
+                  }
+                />
 
                 <Input
-  label="Country"
-  value={form.address.country}
-  onChange={v =>
-    setForm(prev => ({
-      ...prev,
-      address: { ...prev.address, country: v },
-    }))
-  }
-/>
-
+                  label="Country"
+                  value={form.address.country}
+                  onChange={(v) =>
+                    setForm((prev) => ({
+                      ...prev,
+                      address: { ...prev.address, country: v },
+                    }))
+                  }
+                />
               </div>
             </div>
 
@@ -214,10 +206,8 @@ export default function ProfilePage() {
                 Cancel
               </button>
             </div>
-
           </form>
         )}
-
       </div>
     </PageSection>
   );

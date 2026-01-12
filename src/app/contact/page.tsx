@@ -12,7 +12,7 @@ export default function ContactPage() {
 
       <div className="mt-10 text-center">
         <p className="text-sm uppercase tracking-widest text-gray-500">
-          Call us
+          Call Us
         </p>
 
         <a
@@ -22,9 +22,7 @@ export default function ContactPage() {
           +91 93220 61117
         </a>
 
-        <p className="mt-4 text-gray-600">
-          Available 10 AM – 11 PM
-        </p>
+        <p className="mt-4 text-gray-600">Available 10 AM – 11 PM</p>
       </div>
     </PageSection>
   );

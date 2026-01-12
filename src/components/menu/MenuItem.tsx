@@ -15,7 +15,7 @@ type MenuItemType = {
   extras?: any[];
 };
 
-const FALLBACK_IMAGE = "/pizza.webp";
+const FALLBACK_IMAGE = "/fallback.png";
 
 export default function MenuItem(item: MenuItemType) {
   const [open, setOpen] = useState(false);

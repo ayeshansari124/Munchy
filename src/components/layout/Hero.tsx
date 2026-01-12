@@ -9,9 +9,9 @@ const slides = [
   { title: "Cake", subtitle: "Life is sweeter with a", image: "/cake.avif" },
   { title: "Burger", subtitle: "Happiness comes with a", image: "/burger.webp" },
   { title: "Salad", subtitle: "Feel fresh, feel good with a", image: "/salad.webp" },
-  { title: "Fries", subtitle: "Crunchy and crispy", image: "/fries.avif" },
-  { title: "Ice Cream", subtitle: "Cold happiness in every bite", image: "/icecream2.webp" },
-  { title: "Pasta", subtitle: "Comfort food at its best", image: "/pasta1.jpg" },
+  { title: "Fries", subtitle: "Enjoy Crunchy and crispy", image: "/fries.avif" },
+  { title: "Ice Cream", subtitle: "Cold happiness in every bite of", image: "/icecream2.webp" },
+  { title: "Pasta", subtitle: "Comfort food at its best? A", image: "/pasta1.jpg" },
 ];
 
 export default function Hero() {
@@ -34,14 +34,14 @@ export default function Hero() {
   const slide = slides[index];
 
   return (
-    <section className="relative overflow-hidden">
+    <section className=" relative overflow-hidden">
       <div className="relative max-w-7xl mx-auto px-6 py-6">
         <div className="grid md:grid-cols-2 gap-12 items-center">
 
           {/* LEFT TEXT */}
           <div
             className={`
-              transition-all duration-700 ease-out
+              transition-all max-w-96  duration-700 ease-out
               ${animate ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-16"}
             `}
           >
@@ -67,10 +67,9 @@ export default function Hero() {
             </div>
 
             <h1 className="text-4xl md:text-5xl font-extrabold leading-tight">
-              {slide.subtitle} <br />
-              <span className="text-red-600 italic">{slide.title}</span>
+              {slide.subtitle} 
+              <span className="text-red-600 italic"> {slide.title}</span>
             </h1>
-
             <p className="mt-6 text-gray-600 max-w-md font-bold">
               Freshly prepared, delicious, and made just for you.
             </p>

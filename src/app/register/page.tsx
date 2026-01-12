@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -34,7 +34,7 @@ export default function RegisterPage() {
         throw new Error(data.message || "Registration failed");
       }
 
-      toast.success("Account created 🎉");
+      toast.success("Account created!");
       router.push("/");
     } catch (err: any) {
       toast.error(err.message);
@@ -46,19 +46,16 @@ export default function RegisterPage() {
   return (
     <section className="min-h-screen flex items-center justify-center px-4">
       <Card className="max-w-md">
-
         <div className="text-center mb-6">
           <h1 className="text-3xl font-extrabold">Create account</h1>
-          <p className="text-sm text-gray-500 mt-1">
-            Sign up to order 🍕
-          </p>
+          <p className="text-sm text-gray-500 mt-1">Sign up to order 🍕</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <Input
             label="Name"
             value={name}
-            onChange={e => setName(e.target.value)}
+            onChange={(value) => setName(value)}
             required
           />
 
@@ -66,16 +63,14 @@ export default function RegisterPage() {
             label="Email"
             type="email"
             value={email}
-            onChange={e => setEmail(e.target.value)}
-            required
+            onChange={(value) => setEmail(value)}
           />
 
           <Input
             label="Password"
             type="password"
             value={password}
-            onChange={e => setPassword(e.target.value)}
-            required
+            onChange={(value) => setPassword(value)}
           />
 
           <button
@@ -95,7 +90,10 @@ export default function RegisterPage() {
 
         <p className="text-sm text-center text-gray-600 mt-6">
           Already have an account?{" "}
-          <Link href="/login" className="text-red-600 font-medium hover:underline">
+          <Link
+            href="/login"
+            className="text-red-600 font-medium hover:underline"
+          >
             Login
           </Link>
         </p>

@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useEffect, useState } from "react";
 import MenuItem from "@/components/menu/MenuItem";
@@ -8,7 +8,7 @@ export default function MenuPage() {
 
   useEffect(() => {
     fetch("/api/menu-items")
-      .then(res => res.json())
+      .then((res) => res.json())
       .then(setItems);
   }, []);
 

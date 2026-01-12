@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -33,7 +33,7 @@ export default function LoginPage() {
         throw new Error(data.message || "Login failed");
       }
 
-      toast.success("Welcome back 👋");
+      toast.success("Welcome back!");
       router.push("/");
     } catch (err: any) {
       toast.error(err.message);
@@ -45,30 +45,27 @@ export default function LoginPage() {
   return (
     <section className="min-h-screen flex items-center justify-center px-4">
       <Card className="max-w-md">
-
         {/* HEADER */}
         <div className="text-center mb-6">
           <h1 className="text-3xl font-extrabold">Welcome back</h1>
-          <p className="text-sm text-gray-500 mt-1">
-            Login to continue 🍕
-          </p>
+          <p className="text-sm text-gray-500 mt-1">Login to continue 🍕</p>
         </div>
 
         {/* FORM */}
         <form onSubmit={handleSubmit} className="space-y-4">
-          <Input label="Email"
-  type="email"
-  value={email}
-  onChange={value => setEmail(value)}
-/>
+          <Input
+            label="Email"
+            type="email"
+            value={email}
+            onChange={(value) => setEmail(value)}
+          />
 
-
-         <Input label="Password"
-  type="password"
-  value={password}
-  onChange={value => setPassword(value)}
-/>
-
+          <Input
+            label="Password"
+            type="password"
+            value={password}
+            onChange={(value) => setPassword(value)}
+          />
 
           <button
             disabled={loading}
@@ -88,7 +85,10 @@ export default function LoginPage() {
 
         <p className="text-sm text-center text-gray-600 mt-6">
           Don’t have an account?{" "}
-          <Link href="/register" className="text-red-600 font-medium hover:underline">
+          <Link
+            href="/register"
+            className="text-red-600 font-medium hover:underline"
+          >
             Register
           </Link>
         </p>
