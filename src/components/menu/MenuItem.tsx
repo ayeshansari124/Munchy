@@ -43,7 +43,7 @@ export default function MenuItem(item: MenuItemType) {
           />
         </div>
 
-        <h4 className="mt-4 text-lg font-extrabold text-red-600">
+        <h4 className="mt-4 text-2xl font-extrabold text-red-600">
           {item.name}
         </h4>
 

@@ -1,44 +1,55 @@
 'use client';
 
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import { useUser } from "@/hooks/useUser";
+
+const slides = [
+  { title: "Pizza", subtitle: "Everything is better with a", image: "/pizza.webp" },
+  { title: "Cake", subtitle: "Life is sweeter with a", image: "/cake.avif" },
+  { title: "Burger", subtitle: "Happiness comes with a", image: "/burger.webp" },
+  { title: "Salad", subtitle: "Feel fresh, feel good with a", image: "/salad.webp" },
+  { title: "Fries", subtitle: "Crunchy and crispy", image: "/fries.avif" },
+  { title: "Ice Cream", subtitle: "Cold happiness in every bite", image: "/icecream2.webp" },
+  { title: "Pasta", subtitle: "Comfort food at its best", image: "/pasta1.jpg" },
+];
 
 export default function Hero() {
   const { user } = useUser();
+  const [index, setIndex] = useState(0);
+  const [animate, setAnimate] = useState(true);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setAnimate(false);
+      setTimeout(() => {
+        setIndex(i => (i + 1) % slides.length);
+        setAnimate(true);
+      }, 150);
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const slide = slides[index];
 
   return (
-    <section className="relative bg-white overflow-hidden">
-
-      {/* DECOR */}
-      <div className="absolute inset-0 pointer-events-none">
-        <Image
-          src="/salad.webp"
-          alt=""
-          width={520}
-          height={520}
-          className="absolute top-[-150px] left-1/4 opacity-95"
-          priority
-        />
-        <Image
-          src="/fries.avif"
-          alt=""
-          width={560}
-          height={560}
-          className="absolute bottom-[-120px] opacity-95"
-          priority
-        />
-      </div>
-
-      {/* CONTENT */}
-      <div className="relative max-w-7xl mx-auto px-6 py-24">
+    <section className="relative overflow-hidden">
+      <div className="relative max-w-7xl mx-auto px-6 py-6">
         <div className="grid md:grid-cols-2 gap-12 items-center">
 
-          <div>
+          {/* LEFT TEXT */}
+          <div
+            className={`
+              transition-all duration-700 ease-out
+              ${animate ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-16"}
+            `}
+          >
             <div className="mb-4">
               {user ? (
                 <>
                   <p className="text-sm font-bold text-gray-700">
-                    Hi,{" "}
+                    Hi{" "}
                     <span className="text-red-600 text-3xl italic">
                       {user.name}
                     </span>{" "}
@@ -56,13 +67,12 @@ export default function Hero() {
             </div>
 
             <h1 className="text-4xl md:text-5xl font-extrabold leading-tight">
-              Everything <br />
-              is better <br />
-              with a <span className="text-red-600">Pizza</span>
+              {slide.subtitle} <br />
+              <span className="text-red-600 italic">{slide.title}</span>
             </h1>
 
             <p className="mt-6 text-gray-600 max-w-md font-bold">
-              Pizza is the missing piece that makes every day complete.
+              Freshly prepared, delicious, and made just for you.
             </p>
 
             <div className="mt-8 flex gap-6">
@@ -75,15 +85,23 @@ export default function Hero() {
             </div>
           </div>
 
-          <div className="relative h-[420px]">
+          {/* RIGHT IMAGE */}
+          <div
+            className={`
+              relative h-[420px]
+              transition-all duration-700 ease-out
+              ${animate ? "opacity-100 translate-x-0" : "opacity-0 translate-x-16"}
+            `}
+          >
             <Image
-              src="/pizza.webp"
-              alt="Pizza"
+              src={slide.image}
+              alt={slide.title}
               fill
               className="object-contain"
               priority
             />
           </div>
+
         </div>
       </div>
     </section>
