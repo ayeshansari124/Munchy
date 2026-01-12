@@ -30,7 +30,7 @@ export default function MenuItem(item: MenuItemType) {
           ₹{item.basePrice}
         </div>
 
-        <div className="h-[220px] flex items-center justify-center">
+        <div className="h-55 flex items-center justify-center">
           <Image
             src={imageSrc}
             alt={item.name}

@@ -114,7 +114,7 @@ export default function Hero() {
           {/* RIGHT IMAGE */}
           <div
             className={`
-              relative h-[420px]
+              relative h-105
               transition-all duration-700 ease-out
               ${
                 animate

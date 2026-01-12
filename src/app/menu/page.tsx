@@ -26,7 +26,7 @@ export default function MenuPage() {
 
           <div className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide">
             {list.map((item: any) => (
-              <div key={item._id} className="min-w-[280px]">
+              <div key={item._id} className="min-w-70">
                 <MenuItem {...item} />
               </div>
             ))}
