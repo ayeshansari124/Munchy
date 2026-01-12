@@ -4,28 +4,19 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { ShoppingCart } from "lucide-react";
 import { useCart } from "@/context/CartContext";
+import { useUser } from "@/hooks/useUser";
 
 const Header = () => {
   const { items } = useCart();
-
-  const [user, setUser] = useState<any>(null);
+  const { user } = useUser();
   const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetch("/api/auth/me", { credentials: "include" })
-      .then((res) => res.json())
-      .then((data) => {
-        setUser(data);
-        setLoading(false);
-      });
-  }, []);
 
   async function handleLogout() {
     await fetch("/api/auth/logout", {
       method: "POST",
       credentials: "include",
     });
-    setUser(null);
+    user(null);
   }
 
   return (

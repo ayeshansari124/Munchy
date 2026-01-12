@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -6,7 +6,7 @@ import SizesEditor from "@/components/menu/SizesEditor";
 import ExtrasEditor from "@/components/menu/ExtrasEditor";
 import Accordion from "@components/ui/Accordion";
 import Input from "@components/ui/Input";
-import Textarea from "../ui/TextArea";
+import Textarea from "@components/ui/Textarea";
 
 type Category = {
   _id: string;
@@ -42,7 +42,7 @@ const MenuItemForm = ({
   //fetch
   useEffect(() => {
     fetch("/api/categories")
-      .then(res => res.json())
+      .then((res) => res.json())
       .then(setCategories);
   }, []);
 
@@ -140,26 +140,32 @@ const MenuItemForm = ({
 
   return (
     <div className="w-full max-w-4xl bg-white rounded-2xl shadow p-8 space-y-8">
-
       <h3 className="text-xl font-bold">
         {editingItem ? "Edit Menu Item" : "Create Menu Item"}
       </h3>
 
       {/* IMAGE + FORM */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-
         {/* IMAGE */}
         <div className="space-y-4">
           <div className="aspect-square rounded-2xl border bg-gray-50 flex items-center justify-center overflow-hidden">
             {imagePreview ? (
-              <img src={imagePreview} className="w-full h-full object-contain" />
+              <img
+                src={imagePreview}
+                className="w-full h-full object-contain"
+              />
             ) : (
               <span className="text-gray-400 text-sm">No image</span>
             )}
           </div>
 
           <label className="block cursor-pointer">
-            <input type="file" hidden accept="image/*" onChange={handleImageChange} />
+            <input
+              type="file"
+              hidden
+              accept="image/*"
+              onChange={handleImageChange}
+            />
             <div className="bg-red-600 text-white text-center py-2 rounded-full font-medium hover:bg-red-700">
               Choose Image
             </div>
@@ -185,8 +191,10 @@ const MenuItemForm = ({
                 className="w-full border rounded-lg px-4 py-2.5 text-sm"
               >
                 <option value="">Select category</option>
-                {categories.map(c => (
-                  <option key={c._id} value={c.name}>{c.name}</option>
+                {categories.map((c) => (
+                  <option key={c._id} value={c.name}>
+                    {c.name}
+                  </option>
                 ))}
               </select>
             </div>
@@ -199,18 +207,21 @@ const MenuItemForm = ({
             />
           </div>
 
-          <Textarea label="Description" value={description} onChange={setDescription} />
+          <Textarea
+            label="Description"
+            value={description}
+            onChange={setDescription}
+          />
         </div>
       </div>
 
       {/* SIZES + EXTRAS SIDE BY SIDE */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-
         {/* SIZES */}
         <Accordion
           title={`Sizes (${sizes.length})`}
           open={showSizes}
-          toggle={() => setShowSizes(v => !v)}
+          toggle={() => setShowSizes((v) => !v)}
         >
           <SizesEditor items={sizes} setItems={setSizes} />
         </Accordion>
@@ -219,7 +230,7 @@ const MenuItemForm = ({
         <Accordion
           title={`Extra Ingredients (${extras.length})`}
           open={showExtras}
-          toggle={() => setShowExtras(v => !v)}
+          toggle={() => setShowExtras((v) => !v)}
         >
           <ExtrasEditor items={extras} setItems={setExtras} />
         </Accordion>

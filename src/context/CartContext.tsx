@@ -1,19 +1,18 @@
-'use client';
+"use client";
 
 import { createContext, useContext, useState, ReactNode } from "react";
 
 type CartItem = {
-  cartId: string;           // ✅ UNIQUE PER CART ITEM
-  productId: string;        // menu item _id
+  cartId: string;
+  productId: string;
   name: string;
   image: string;
   basePrice: number;
-  selectedSize?: { name: string; price: number };
-  selectedExtras?: { name: string; price: number }[];
+  size?: { name: string; price: number };
+  extras?: { name: string; price: number }[];
   quantity: number;
   finalPrice: number;
 };
-
 
 type CartContextType = {
   items: CartItem[];
@@ -29,12 +28,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
 
   function addItem(item: CartItem) {
-    setItems(prev => [...prev, item]);
+    setItems((prev) => [...prev, item]);
   }
 
   function removeItem(cartId: string) {
-  setItems(prev => prev.filter(item => item.cartId !== cartId));
-}
+    setItems((prev) => prev.filter((item) => item.cartId !== cartId));
+  }
 
   function clearCart() {
     setItems([]);
@@ -42,8 +41,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const total = items.reduce((sum, item) => {
     const sizePrice = item.size?.price || 0;
-    const extrasPrice =
-      item.extras?.reduce((s, e) => s + e.price, 0) || 0;
+    const extrasPrice = item.extras?.reduce((s, e) => s + e.price, 0) || 0;
 
     return sum + (item.basePrice + sizePrice + extrasPrice) * item.quantity;
   }, 0);

@@ -1,19 +1,19 @@
 import mongoose, { Schema, models } from "mongoose";
 
+const extraPriceSchema = new Schema(
+  {
+    name: { type: String, required: true },
+    price: { type: Number, required: true },
+  },
+  { _id: false }
+);
+
 const OrderItemSchema = new Schema({
   name: String,
   quantity: Number,
   basePrice: Number,
-  selectedSize: {
-    name: String,
-    price: Number,
-  },
-  selectedExtras: [
-    {
-      name: String,
-      price: Number,
-    },
-  ],
+  selectedSize: { type: [extraPriceSchema], default: [] },
+  selectedExtras: { type: [extraPriceSchema], default: [] },
   finalPrice: Number,
 });
 

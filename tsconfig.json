@@ -24,6 +24,7 @@
       "@models/*": ["./src/models/*"],
       "@context/*": ["./src/context/*"],
       "@hooks/*": ["./src/hooks/*"],
+      "@lib/*": ["./src/lib/*"]
     }
   },
   "include": [
@@ -32,7 +33,10 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
-    "**/*.mts"
-, "src/components/layout/Hero.tsx", "src/components/layout/SectionHeaders.jsx"  ],
+    "**/*.mts",
+    "src/components/layout/Hero.tsx",
+    "src/components/layout/SectionHeaders.jsx",
+    "src/models/User.ts"
+  ],
   "exclude": ["node_modules"]
 }
