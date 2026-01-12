@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
 import { useEffect, useState } from "react";
-import AdminMenuItemCard from "@/components/admin/AdminMenuItemCard";
 import MenuItemForm from "@/components/menu/MenuItemForm";
+import AdminMenuItemCard from "@/components/admin/AdminMenuItemCard";
 import toast from "react-hot-toast";
 
 export default function AdminMenuPage() {
@@ -37,7 +37,6 @@ export default function AdminMenuPage() {
 
   return (
     <div className="space-y-16">
-
       <div className="flex justify-center">
         <MenuItemForm
           editingItem={editingItem}
@@ -62,7 +61,6 @@ export default function AdminMenuPage() {
           </div>
         </div>
       ))}
-
     </div>
   );
 }

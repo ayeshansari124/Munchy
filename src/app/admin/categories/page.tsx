@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { Pencil, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -53,12 +53,11 @@ export default function AdminCategoriesPage() {
 
   return (
     <div className="max-w-xl mx-auto space-y-10">
-
       {/* CREATE / EDIT */}
       <div className="flex gap-3">
         <input
           value={name}
-          onChange={e => setName(e.target.value)}
+          onChange={(e) => setName(e.target.value)}
           className="flex-1 rounded-full px-4 py-2 border"
           placeholder="Category name"
         />
@@ -73,7 +72,7 @@ export default function AdminCategoriesPage() {
 
       {/* LIST */}
       <div className="space-y-3">
-        {categories.map(cat => (
+        {categories.map((cat) => (
           <div
             key={cat._id}
             className="flex justify-between items-center bg-gray-100 rounded-xl px-4 py-3"
@@ -81,10 +80,12 @@ export default function AdminCategoriesPage() {
             <span className="font-medium">{cat.name}</span>
 
             <div className="flex gap-2">
-              <button onClick={() => {
-                setEditingId(cat._id);
-                setName(cat.name);
-              }}>
+              <button
+                onClick={() => {
+                  setEditingId(cat._id);
+                  setName(cat.name);
+                }}
+              >
                 <Pencil size={16} />
               </button>
 
@@ -95,7 +96,6 @@ export default function AdminCategoriesPage() {
           </div>
         ))}
       </div>
-
     </div>
   );
 }

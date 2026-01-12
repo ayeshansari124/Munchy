@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -16,7 +16,7 @@ export default function AdminOrdersPage() {
 
   useEffect(() => {
     fetch("/api/admin/orders", { credentials: "include" })
-      .then(res => res.json())
+      .then((res) => res.json())
       .then(setOrders);
   }, []);
 
@@ -31,14 +31,13 @@ export default function AdminOrdersPage() {
     if (!res.ok) return toast.error("Failed");
 
     const updated = await res.json();
-    setOrders(o => o.map(x => x._id === updated._id ? updated : x));
+    setOrders((o) => o.map((x) => (x._id === updated._id ? updated : x)));
     toast.success("Order completed");
   }
 
   return (
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-
-      {orders.map(order => (
+      {orders.map((order) => (
         <div
           key={order._id}
           className={`rounded-xl border p-4 text-sm
@@ -47,9 +46,7 @@ export default function AdminOrdersPage() {
         >
           <div className="flex justify-between mb-2">
             <div>
-              <p className="font-mono font-semibold">
-                #{order._id.slice(-6)}
-              </p>
+              <p className="font-mono font-semibold">#{order._id.slice(-6)}</p>
               <p className="text-xs text-gray-500">
                 {order.user?.name || "Guest"}
               </p>
@@ -75,12 +72,9 @@ export default function AdminOrdersPage() {
             ))}
           </div>
 
-          <div className="mt-3 font-bold text-red-600">
-            ₹{order.total}
-          </div>
+          <div className="mt-3 font-bold text-red-600">₹{order.total}</div>
         </div>
       ))}
-
     </div>
   );
 }
