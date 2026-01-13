@@ -5,8 +5,6 @@ export const runtime = "nodejs";
 
 export async function POST() {
   const cookieStore = await cookies();
-
   cookieStore.delete("token");
-
   return NextResponse.json({ ok: true });
 }

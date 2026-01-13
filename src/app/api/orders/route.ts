@@ -1,5 +1,5 @@
-import { connectDB } from "@/lib/db";
 import Order from "@/models/Order";
+import { connectDB } from "@/lib/db";
 import { ok, fail } from "@/lib/response";
 import { requireUser } from "@/lib/auth";
 

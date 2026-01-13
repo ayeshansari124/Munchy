@@ -14,12 +14,18 @@ export async function POST(req: Request) {
 
   const user = await User.findOne({ email });
   if (!user) {
-    return NextResponse.json({ message: "Invalid credentials" }, { status: 401 });
+    return NextResponse.json(
+      { message: "Invalid credentials" },
+      { status: 401 }
+    );
   }
 
   const ok = await bcrypt.compare(password, user.password);
   if (!ok) {
-    return NextResponse.json({ message: "Invalid credentials" }, { status: 401 });
+    return NextResponse.json(
+      { message: "Invalid credentials" },
+      { status: 401 }
+    );
   }
 
   const token = jwt.sign(
@@ -28,7 +34,6 @@ export async function POST(req: Request) {
     { expiresIn: "7d" }
   );
 
-  // ✅ THIS IS THE FIX
   const cookieStore = await cookies();
   cookieStore.set("token", token, {
     httpOnly: true,

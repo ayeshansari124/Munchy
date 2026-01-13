@@ -12,27 +12,36 @@ export default function CheckoutForm({
     <div className="bg-gray-50 rounded-2xl p-6">
       <h2 className="text-xl font-bold mb-4">Checkout</h2>
 
-      {["phone", "street", "country"].map((field) => (
-        <Input
-          key={field}
-          label={field.toUpperCase()}
-          value={address[field]}
-          onChange={(value) => setAddress({ ...address, [field]: value })}
-        />
-      ))}
+      <Input
+        label="Phone"
+        value={address.phone}
+        onChange={(v) => setAddress({ ...address, phone: v })}
+      />
+
+      <Input
+        label="Street"
+        value={address.street}
+        onChange={(v) => setAddress({ ...address, street: v })}
+      />
 
       <div className="flex gap-3">
         <Input
-          label="Postal Code"
-          value={address.postalCode}
-          onChange={(value) => setAddress({ ...address, postalCode: value })}
-        />
-        <Input
           label="City"
           value={address.city}
-          onChange={(value) => setAddress({ ...address, city: value })}
+          onChange={(v) => setAddress({ ...address, city: v })}
+        />
+        <Input
+          label="Postal Code"
+          value={address.postalCode}
+          onChange={(v) => setAddress({ ...address, postalCode: v })}
         />
       </div>
+
+      <Input
+        label="Country"
+        value={address.country}
+        onChange={(v) => setAddress({ ...address, country: v })}
+      />
 
       <button
         onClick={onPay}

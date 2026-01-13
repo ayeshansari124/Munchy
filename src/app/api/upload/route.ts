@@ -13,10 +13,11 @@ export async function POST(req: Request) {
     const buffer = Buffer.from(await file.arrayBuffer());
 
     const result: any = await new Promise((resolve, reject) => {
-      cloudinary.uploader.upload_stream(
-        { folder: "menu-items" },
-        (err, res) => (err ? reject(err) : resolve(res))
-      ).end(buffer);
+      cloudinary.uploader
+        .upload_stream({ folder: "menu-items" }, (err, res) =>
+          err ? reject(err) : resolve(res)
+        )
+        .end(buffer);
     });
 
     return ok({ url: result.secure_url });

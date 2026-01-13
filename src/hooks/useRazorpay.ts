@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import toast from "react-hot-toast";
 
@@ -51,7 +51,7 @@ export function useRazorpay() {
             }),
           });
 
-          toast.success("Order placed successfully 🎉");
+          toast.success("Order placed successfully!!");
           onSuccess();
         },
         theme: { color: "#dc2626" },

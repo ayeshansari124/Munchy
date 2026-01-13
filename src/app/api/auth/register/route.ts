@@ -6,8 +6,7 @@ import { ok, fail } from "@/lib/response";
 export async function POST(req: Request) {
   const { name, email, password } = await req.json();
 
-  if (!name || !email || !password)
-    return fail("All fields required");
+  if (!name || !email || !password) return fail("All fields required");
 
   await connectDB();
 
