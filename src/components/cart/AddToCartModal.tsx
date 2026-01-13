@@ -19,7 +19,7 @@ export default function AddToCartModal({
   const [selectedSize, setSelectedSize] = useState<any>(null);
   const [selectedExtras, setSelectedExtras] = useState<any[]>([]);
 
-  /* Auto-select first size */
+
   useEffect(() => {
     if (item.sizes?.length) {
       setSelectedSize(item.sizes[0]);
