@@ -1,36 +1,117 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🍕 MunchY – Full-Stack Food Ordering Platform
 
-## Getting Started
+A modern full-stack food ordering application to **browse menus, customize food items, manage carts, and place orders seamlessly**, with admin management, secure authentication, and a clean, responsive UI.  
+Built using **Next.js, React, MongoDB, and Razorpay**, with a strong focus on **real-world architecture, reusability, and production-ready patterns**.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🚀 Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 🍽️ Food Ordering System
+- Browse food items by category
+- View detailed food cards with images & descriptions
+- Customize items with:
+  - Multiple sizes
+  - Extra ingredients
+- Add items to cart **without login**
+- Dynamic price calculation
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 🛒 Cart & Checkout
+- Persistent cart using **React Context**
+- Cart accessible even for guest users
+- Quantity, size & extras tracking
+- Checkout form with address inputs
+- **Auto-fill checkout address from user profile**
+- Login required **only at payment time**
+- Secure online payment using **Razorpay**
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+### 👤 User Authentication & Profile
+- Register / Login / Logout
+- Secure authentication using **HTTP-only cookies**
+- Persistent sessions
+- User profile management:
+  - Name
+  - Phone
+  - Delivery address
+- Profile updates instantly reflected in checkout
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 🛠️ Admin Panel
+- Admin-only access
+- Category management (create / update / delete)
+- Menu item management:
+  - Image upload
+  - Base price
+  - Sizes
+  - Extra ingredients
+- Order management:
+  - View all orders
+  - Mark orders as completed
+- Clean capsule-style admin navigation
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🌐 Frontend Architecture
+- Built with **Next.js (App Router)**
+- Modular structure:
+  - `app/` – routes & layouts
+  - `components/` – reusable UI components
+  - `hooks/` – business logic & API interaction
+  - `context/` – global cart state
+  - `lib/` – centralized API utilities
+- Fully responsive design (mobile, tablet, desktop)
+- Styled using **Tailwind CSS**
+- Custom animations & transitions
+- Global font using **Nunito**
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 🧠 Backend Architecture
+- REST API built with **Node.js + Express**
+- **MongoDB + Mongoose** for data modeling
+- Cookie-based authentication
+- Role-based authorization (admin / user)
+- Image uploads using **Multer**
+- Razorpay order & payment verification
+- Secure CORS configuration
+
+---
+
+## 🛠 Tech Stack
+
+### Frontend
+- Next.js (App Router)
+- React
+- TypeScript
+- Tailwind CSS
+- React Context API
+- Razorpay Checkout
+
+### Backend
+- Node.js
+- Express
+- MongoDB
+- Mongoose
+- Razorpay API
+- Multer
+- Cookie-based authentication
+
+---
+
+## 📚 Learnings
+- Designing a **scalable full-stack architecture**
+- Implementing **guest-to-authenticated checkout flows**
+- Centralizing API calls for maintainability
+- Managing complex UI state with Context + Hooks
+- Handling real payment gateways securely
+- Building admin dashboards with role protection
+- Creating a fully responsive production-grade UI
+
+---
+
+### Built with ❤️ by Ayesha
