@@ -1,5 +1,6 @@
 "use client";
-//
+
+import SectionHeaders from "@/components/layout/SectionHeaders";
 import toast from "react-hot-toast";
 import { useUser } from "@/hooks/useUser";
 import { useState } from "react";
@@ -73,32 +74,46 @@ export default function ProfilePage() {
     .join(", ");
 
   return (
-    <PageSection className="min-h-screen flex justify-center items-center">
+    
+    <PageSection className="min-h-screen flex ">
+       <SectionHeaders subHeader="Your Profile" mainHeader="Manage Your Account" />
       <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8 space-y-6">
-        {/* HEADER */}
-        <div className="text-center">
-          <h1 className="text-3xl font-bold">Your Profile</h1>
-          <p className="text-sm text-gray-500 mt-1">
-            Manage your account & delivery details
-          </p>
-        </div>
+      
+        
 
         {/* VIEW MODE */}
-        {!editing && (
-          <div className="space-y-4">
-            <ProfileRow label="Name" value={user.name} />
-            <ProfileRow label="Email" value={user.email} />
-            <ProfileRow label="Phone" value={user.phone || "—"} />
-            <ProfileRow label="Address" value={fullAddress || "—"} />
+        {/* VIEW MODE */}
+{!editing && (
+  <div className="space-y-6">
 
-            <button
-              onClick={startEdit}
-              className="w-full mt-4 bg-red-600 text-white py-3 rounded-full font-semibold hover:bg-red-700"
-            >
-              Edit Profile
-            </button>
-          </div>
-        )}
+    {/* BASIC INFO */}
+    <div className="space-y-4">
+      <ProfileRow label="Name" value={user.name} />
+      <ProfileRow label="Email" value={user.email} />
+      <ProfileRow label="Phone" value={user.phone || "—"} />
+    </div>
+
+    <hr className="border-gray-200" />
+
+    {/* ADDRESS */}
+    <div className="space-y-2">
+      <p className="text-xs font-semibold uppercase tracking-wide text-red-700 font-sans">
+        Delivery Address
+      </p>
+      <p className="text-gray-900 leading-relaxed">
+        {fullAddress || "—"}
+      </p>
+    </div>
+
+    <button
+      onClick={startEdit}
+      className="w-full mt-6 bg-red-600 text-white py-3 rounded-full font-semibold hover:bg-red-700"
+    >
+      Edit Profile
+    </button>
+  </div>
+)}
+
 
         {/* EDIT MODE */}
         {editing && (
@@ -216,8 +231,13 @@ export default function ProfilePage() {
 /* ---------------- HELPERS ---------------- */
 
 const ProfileRow = ({ label, value }: { label: string; value: string }) => (
-  <div>
-    <p className="text-sm text-gray-500">{label}</p>
-    <p className="font-medium text-gray-900 leading-snug">{value}</p>
+  <div className="space-y-1">
+    <p className="text-xs uppercase tracking-wide text-red-700 font-sans">
+      {label}
+    </p>
+    <p className="text-base font-medium text-gray-900">
+      {value}
+    </p>
   </div>
 );
+

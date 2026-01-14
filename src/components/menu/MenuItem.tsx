@@ -5,56 +5,55 @@ import { ShoppingCart } from "lucide-react";
 import { useState } from "react";
 import AddToCartModal from "@/components/cart/AddToCartModal";
 
-type MenuItemType = {
-  _id: string;
-  name: string;
-  image: string;
-  description: string;
-  basePrice: number;
-  sizes?: any[];
-  extras?: any[];
-};
-
 const FALLBACK_IMAGE = "/fallback.png";
 
-export default function MenuItem(item: MenuItemType) {
+export default function MenuItem(item) {
   const [open, setOpen] = useState(false);
 
   const imageSrc =
-    item.image && item.image.startsWith("http") ? item.image : FALLBACK_IMAGE;
+    item.image && item.image.startsWith("http")
+      ? item.image
+      : FALLBACK_IMAGE;
 
   return (
     <>
-      <div className="relative bg-white rounded-2xl shadow-md p-6 text-center hover:shadow-xl transition">
-        <div className="absolute top-4 right-4 bg-red-600 text-white text-sm font-bold px-3 py-1 rounded-full">
+      <div className="relative bg-white rounded-2xl shadow-md hover:shadow-xl transition overflow-hidden">
+
+        {/* PRICE BADGE */}
+        <div className="absolute top-3 right-3 z-10 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full">
           ₹{item.basePrice}
         </div>
 
-        <div className="h-55 flex items-center justify-center">
+        {/* IMAGE AREA (FIXED & SAFE) */}
+        <div className="relative w-full aspect-square bg-gray-50 flex items-center justify-center">
           <Image
             src={imageSrc}
             alt={item.name}
-            width={300}
-            height={300}
-            className="object-contain"
+            fill
+            sizes="(max-width: 768px) 90vw, 300px"
+            className="object-contain p-4"
+            priority
           />
         </div>
 
-        <h4 className="mt-4 text-2xl font-extrabold text-red-600">
-          {item.name}
-        </h4>
+        {/* CONTENT */}
+        <div className="p-5 flex flex-col gap-3 text-center">
+          <h4 className="text-2xl font-extrabold text-red-600 leading-snug line-clamp-2">
+            {item.name}
+          </h4>
 
-        <p className="mt-2 text-sm text-gray-600 line-clamp-3">
-          {item.description}
-        </p>
+          <p className="text-sm text-gray-600 leading-relaxed line-clamp-3">
+            {item.description}
+          </p>
 
-        <button
-          onClick={() => setOpen(true)}
-          className="mt-5 w-full flex items-center justify-center gap-2 bg-red-600 text-white py-2.5 rounded-full font-semibold hover:bg-red-700 transition"
-        >
-          <ShoppingCart size={18} />
-          Add to Cart
-        </button>
+          <button
+            onClick={() => setOpen(true)}
+            className="mt-auto w-full flex items-center justify-center gap-2 bg-red-600 text-white py-2.5 rounded-full font-semibold hover:bg-red-700 transition"
+          >
+            <ShoppingCart size={18} />
+            Add to Cart
+          </button>
+        </div>
       </div>
 
       {open && <AddToCartModal item={item} onClose={() => setOpen(false)} />}

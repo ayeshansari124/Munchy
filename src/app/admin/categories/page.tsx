@@ -74,26 +74,42 @@ export default function AdminCategoriesPage() {
       <div className="space-y-3">
         {categories.map((cat) => (
           <div
-            key={cat._id}
-            className="flex justify-between items-center bg-gray-100 rounded-xl px-4 py-3"
-          >
-            <span className="font-medium">{cat.name}</span>
+  key={cat._id}
+  className="
+    flex items-center
+    bg-gray-100 rounded-xl
+    px-3 py-2
+    sm:px-4 sm:py-3
+  "
+>
+  {/* CATEGORY NAME */}
+  <span className="flex-1 text-base sm:text-sm font-semibold">
+    {cat.name}
+  </span>
 
-            <div className="flex gap-2">
-              <button
-                onClick={() => {
-                  setEditingId(cat._id);
-                  setName(cat.name);
-                }}
-              >
-                <Pencil size={16} />
-              </button>
+  {/* ACTIONS */}
+  <div className="flex items-center gap-1 sm:gap-2">
+    <button
+      onClick={() => {
+        setEditingId(cat._id);
+        setName(cat.name);
+      }}
+      className="p-2"
+      aria-label="Edit category"
+    >
+      <Pencil size={18} />
+    </button>
 
-              <button onClick={() => remove(cat._id)}>
-                <Trash2 size={16} className="text-red-600" />
-              </button>
-            </div>
-          </div>
+    <button
+      onClick={() => remove(cat._id)}
+      className="p-2 text-red-600"
+      aria-label="Delete category"
+    >
+      <Trash2 size={18} />
+    </button>
+  </div>
+</div>
+
         ))}
       </div>
     </div>
