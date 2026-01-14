@@ -40,12 +40,19 @@ export default function MenuPage() {
         <div key={category} className="space-y-4">
           <h2 className="text-3xl font-bold">{category}</h2>
 
-          {/* ===== DESKTOP GRID ===== */}
-          <div className="hidden md:grid grid-cols-2 lg:grid-cols-3 gap-8">
-            {list.map((item: any) => (
-              <MenuItem key={item._id} {...item} />
-            ))}
-          </div>
+          {/* ===== DESKTOP HORIZONTAL CAROUSEL ===== */}
+<div className="hidden md:block">
+  <div className="flex gap-8 overflow-x-auto scrollbar-hide">
+    {list.map((item: any) => (
+      <div
+        key={item._id}
+        className="flex-shrink-0 w-[300px]"
+      >
+        <MenuItem {...item} />
+      </div>
+    ))}
+  </div>
+</div>
 
           {/* ===== MOBILE CAROUSEL ===== */}
           <div className="md:hidden space-y-3">

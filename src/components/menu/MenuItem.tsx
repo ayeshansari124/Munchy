@@ -28,7 +28,7 @@ export default function MenuItem(item: MenuItem) {
         </div>
 
         {/* IMAGE AREA (FIXED & SAFE) */}
-        <div className="relative w-full aspect-square bg-gray-50 flex items-center justify-center">
+        <div className="relative w-full aspect-square bg-white flex items-center justify-center">
           <Image
             src={imageSrc}
             alt={item.name}

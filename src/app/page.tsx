@@ -8,20 +8,35 @@ import SectionHeaders from "@/components/layout/SectionHeaders";
 export default function Home() {
   const [items, setItems] = useState<any[]>([]);
 
-  useEffect(() => {
-    fetch("/api/menu-items")
-      .then((res) => res.json())
-      .then((data) => {
-        const latest = data
-          .sort(
-            (a: any, b: any) =>
-              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-          )
-          .slice(0, 6);
+ useEffect(() => {
+  fetch("/api/menu-items")
+    .then((res) => res.json())
+    .then((data) => {
+      const byCategory: Record<string, any[]> = {};
 
-        setItems(latest);
+      // 1️⃣ Group by category
+      data.forEach((item: any) => {
+        if (!byCategory[item.category]) {
+          byCategory[item.category] = [];
+        }
+        byCategory[item.category].push(item);
       });
-  }, []);
+
+      // 2️⃣ Pick latest item from each category
+      const latestFromEachCategory = Object.values(byCategory)
+        .map((items) =>
+          items.sort(
+            (a, b) =>
+              new Date(b.createdAt).getTime() -
+              new Date(a.createdAt).getTime()
+          )[0]
+        )
+        .slice(0, 6); // safety cap
+
+      setItems(latestFromEachCategory);
+    });
+}, []);
+
 
   return (
     <div>
