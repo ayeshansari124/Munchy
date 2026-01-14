@@ -5,37 +5,13 @@ import { useEffect, useState } from "react";
 import { useUser } from "@/hooks/useUser";
 
 const slides = [
-  {
-    title: "Pizza",
-    subtitle: "Everything is better with a",
-    image: "/pizza.webp",
-  },
+  { title: "Pizza", subtitle: "Everything is better with a", image: "/pizza.webp" },
   { title: "Cake", subtitle: "Life is sweeter with a", image: "/cake.avif" },
-  {
-    title: "Burger",
-    subtitle: "Happiness comes with a",
-    image: "/burger.webp",
-  },
-  {
-    title: "Salad",
-    subtitle: "Feel fresh, feel good with a",
-    image: "/salad.webp",
-  },
-  {
-    title: "Fries",
-    subtitle: "Enjoy Crunchy and crispy",
-    image: "/fries.avif",
-  },
-  {
-    title: "Ice Cream",
-    subtitle: "Cold happiness in every bite of",
-    image: "/icecream2.webp",
-  },
-  {
-    title: "Pasta",
-    subtitle: "Comfort food at its best? A",
-    image: "/pasta1.jpg",
-  },
+  { title: "Burger", subtitle: "Happiness comes with a", image: "/burger.webp" },
+  { title: "Salad", subtitle: "Feel fresh, feel good with a", image: "/salad.webp" },
+  { title: "Fries", subtitle: "Enjoy crunchy and crispy", image: "/fries.avif" },
+  { title: "Ice Cream", subtitle: "Cold happiness in every bite of", image: "/icecream2.webp" },
+  { title: "Pasta", subtitle: "Comfort food at its best? A", image: "/pasta1.jpg" },
 ];
 
 export default function Hero() {
@@ -58,18 +34,20 @@ export default function Hero() {
   const slide = slides[index];
 
   return (
-    <section className=" relative overflow-hidden">
-      <div className="relative max-w-7xl mx-auto px-6 py-6">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          {/* LEFT TEXT */}
+    <section className="overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 py-10">
+        {/* 
+          Mobile  -> column
+          Desktop -> row
+        */}
+        <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
+
+          {/* ================= TEXT ================= */}
           <div
             className={`
-              transition-all max-w-96  duration-700 ease-out
-              ${
-                animate
-                  ? "opacity-100 translate-x-0"
-                  : "opacity-0 -translate-x-16"
-              }
+              w-full md:w-1/2
+              transition-all duration-700 ease-out
+              ${animate ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-6"}
             `}
           >
             <div className="mb-4">
@@ -97,11 +75,12 @@ export default function Hero() {
               {slide.subtitle}
               <span className="text-red-600 italic"> {slide.title}</span>
             </h1>
-            <p className="mt-6 text-gray-600 max-w-md font-bold">
+
+            <p className="mt-4 text-gray-600 font-bold max-w-md">
               Freshly prepared, delicious, and made just for you.
             </p>
 
-            <div className="mt-8 flex gap-6">
+            <div className="mt-6 flex gap-6">
               <button className="bg-red-600 text-white px-6 py-3 rounded-full hover:bg-red-700">
                 Order Now
               </button>
@@ -111,16 +90,13 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* RIGHT IMAGE */}
+          {/* ================= IMAGE ================= */}
           <div
             className={`
-              relative h-105
+              w-full md:w-1/2
+              relative aspect-square max-w-md
               transition-all duration-700 ease-out
-              ${
-                animate
-                  ? "opacity-100 translate-x-0"
-                  : "opacity-0 translate-x-16"
-              }
+              ${animate ? "opacity-100 translate-x-0" : "opacity-0 translate-x-6"}
             `}
           >
             <Image
@@ -131,6 +107,7 @@ export default function Hero() {
               priority
             />
           </div>
+
         </div>
       </div>
     </section>
