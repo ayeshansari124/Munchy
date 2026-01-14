@@ -4,6 +4,8 @@ import Link from "next/link";
 import { ShoppingCart, User, LogOut } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useUser } from "@/hooks/useUser";
+import type { CartItem } from "@/context/CartContext";
+
 
 export default function Header() {
   const { items } = useCart();
@@ -126,7 +128,8 @@ export default function Header() {
 }
 
 /* CART ICON */
-function CartIcon({ items }) {
+function CartIcon({ items }: { items: CartItem[] }) {
+
   return (
     <Link href="/cart" className="relative" aria-label="Cart">
       <ShoppingCart size={22} />

@@ -2,17 +2,32 @@
 
 import { createContext, useContext, useState, ReactNode } from "react";
 
-type CartItem = {
+export type SelectedSize = {
+  name: string;
+  price: number;
+};
+
+export type SelectedExtra = {
+  _id: string;
+  name: string;
+  price: number;
+};
+
+export type CartItem = {
   cartId: string;
-  productId: string;
+  productId: string; 
   name: string;
   image: string;
   basePrice: number;
-  size?: { name: string; price: number };
-  extras?: { name: string; price: number }[];
+
+  selectedSize?: SelectedSize | null;
+  selectedExtras?: SelectedExtra[];
+
   quantity: number;
   finalPrice: number;
 };
+
+
 
 type CartContextType = {
   items: CartItem[];
@@ -40,8 +55,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }
 
   const total = items.reduce((sum, item) => {
-    const sizePrice = item.size?.price || 0;
-    const extrasPrice = item.extras?.reduce((s, e) => s + e.price, 0) || 0;
+    const sizePrice = item.selectedSize?.price || 0;
+    const extrasPrice = item.selectedExtras?.reduce((s, e) => s + e.price, 0) || 0;
 
     return sum + (item.basePrice + sizePrice + extrasPrice) * item.quantity;
   }, 0);

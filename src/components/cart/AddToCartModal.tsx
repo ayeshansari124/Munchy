@@ -6,26 +6,32 @@ import { useEffect, useMemo, useState } from "react";
 import { useCart } from "@context/CartContext";
 import { nanoid } from "nanoid";
 import toast from "react-hot-toast";
+import type { MenuItem, MenuSize, MenuExtra } from "@/types/menu";
 
 export default function AddToCartModal({
   item,
   onClose,
 }: {
-  item: any;
+  item: MenuItem;
   onClose: () => void;
 }) {
   const { addItem } = useCart();
 
-  const [selectedSize, setSelectedSize] = useState<any>(null);
-  const [selectedExtras, setSelectedExtras] = useState<any[]>([]);
+  /* ✅ NORMALIZE OPTIONAL ARRAYS (ONCE) */
+  const sizes: MenuSize[] = item.sizes ?? [];
+  const extras: MenuExtra[] = item.extras ?? [];
 
+  const [selectedSize, setSelectedSize] = useState<MenuSize | null>(null);
+  const [selectedExtras, setSelectedExtras] = useState<MenuExtra[]>([]);
 
+  /* ✅ DEFAULT SIZE */
   useEffect(() => {
-    if (item.sizes?.length) {
-      setSelectedSize(item.sizes[0]);
+    if (sizes.length > 0) {
+      setSelectedSize(sizes[0]);
     }
-  }, [item]);
+  }, [sizes]);
 
+  /* ✅ PRICE CALCULATION */
   const finalPrice = useMemo(() => {
     let price = item.basePrice;
     if (selectedSize) price += selectedSize.price;
@@ -33,14 +39,16 @@ export default function AddToCartModal({
     return price;
   }, [item.basePrice, selectedSize, selectedExtras]);
 
-  function toggleExtra(extra: any) {
+  /* ✅ STRONGLY TYPED EXTRA TOGGLE */
+  function toggleExtra(extra: MenuExtra) {
     setSelectedExtras((prev) =>
-      prev.some((e) => e.name === extra.name)
-        ? prev.filter((e) => e.name !== extra.name)
+      prev.some((e) => e._id === extra._id)
+        ? prev.filter((e) => e._id !== extra._id)
         : [...prev, extra]
     );
   }
 
+  /* ✅ ADD TO CART (MATCHES CartItem TYPE EXACTLY) */
   function handleAdd() {
     addItem({
       cartId: nanoid(),
@@ -65,6 +73,7 @@ export default function AddToCartModal({
           <X />
         </button>
 
+        {/* HEADER */}
         <div className="flex gap-4">
           <Image
             src={item.image}
@@ -81,11 +90,11 @@ export default function AddToCartModal({
         </div>
 
         {/* SIZES */}
-        {item.sizes?.length > 0 && (
+        {sizes.length > 0 && (
           <div className="mt-6">
             <p className="font-semibold mb-2">Choose size</p>
             <div className="space-y-2">
-              {item.sizes.map((s: any) => (
+              {sizes.map((s) => (
                 <label
                   key={s.name}
                   className="flex justify-between items-center border rounded-lg px-4 py-2 cursor-pointer"
@@ -103,13 +112,13 @@ export default function AddToCartModal({
         )}
 
         {/* EXTRAS */}
-        {item.extras?.length > 0 && (
+        {extras.length > 0 && (
           <div className="mt-6">
             <p className="font-semibold mb-2">Extras</p>
             <div className="space-y-2">
-              {item.extras.map((e: any) => (
+              {extras.map((e) => (
                 <label
-                  key={e.name}
+                  key={e._id}
                   className="flex justify-between items-center border rounded-lg px-4 py-2 cursor-pointer"
                 >
                   <span>
@@ -117,7 +126,7 @@ export default function AddToCartModal({
                   </span>
                   <input
                     type="checkbox"
-                    checked={selectedExtras.some((x) => x.name === e.name)}
+                    checked={selectedExtras.some((x) => x._id === e._id)}
                     onChange={() => toggleExtra(e)}
                   />
                 </label>

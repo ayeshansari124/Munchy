@@ -4,10 +4,13 @@ import Image from "next/image";
 import { ShoppingCart } from "lucide-react";
 import { useState } from "react";
 import AddToCartModal from "@/components/cart/AddToCartModal";
+import type { MenuItem } from "@/types/menu";
 
 const FALLBACK_IMAGE = "/fallback.png";
 
-export default function MenuItem(item) {
+export default function MenuItem(item: MenuItem) {
+
+
   const [open, setOpen] = useState(false);
 
   const imageSrc =

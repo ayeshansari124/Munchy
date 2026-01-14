@@ -50,7 +50,10 @@ export default function MenuPage() {
           {/* ===== MOBILE CAROUSEL ===== */}
           <div className="md:hidden space-y-3">
             <div
-              ref={(el) => (scrollRefs.current[category] = el)}
+             ref={(el) => {
+  scrollRefs.current[category] = el;
+}}
+
               onScroll={() => handleScroll(category)}
               className="flex overflow-x-auto snap-x snap-mandatory scroll-smooth scrollbar-hide"
             >
