@@ -8,15 +8,20 @@ export const runtime = "nodejs";
 
 export async function POST(req: Request) {
   try {
-    const { name, email, password } = await req.json();
+    const body = await req.json();
+    const { name, email, password } = body;
 
     if (!name || !email || !password) {
-      return NextResponse.json({ message: "All fields required" }, { status: 400 });
+      return NextResponse.json(
+        { message: "All fields required" },
+        { status: 400 }
+      );
     }
 
     if (!process.env.JWT_SECRET) {
+      console.error("JWT_SECRET missing");
       return NextResponse.json(
-        { message: "JWT secret not configured" },
+        { message: "Server misconfigured" },
         { status: 500 }
       );
     }
@@ -25,7 +30,10 @@ export async function POST(req: Request) {
 
     const exists = await User.findOne({ email });
     if (exists) {
-      return NextResponse.json({ message: "Email already exists" }, { status: 400 });
+      return NextResponse.json(
+        { message: "Email already exists" },
+        { status: 400 }
+      );
     }
 
     const user = await User.create({
