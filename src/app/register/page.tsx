@@ -5,14 +5,14 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import Image from "next/image";
 import Link from "next/link";
-
+import { useUser } from "@/hooks/useUser";
 import Card from "@/components/ui/Card";
 import Input from "@/components/ui/Input";
 import Divider from "@/components/ui/Divider";
 
 export default function RegisterPage() {
   const router = useRouter();
-
+  const { fetchUser } = useUser();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -31,6 +31,7 @@ export default function RegisterPage() {
 
       if (!res.ok) {
         const data = await res.json();
+        await fetchUser();
         throw new Error(data.message || "Registration failed");
       }
 

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import Image from "next/image";
 import Link from "next/link";
+import { useUser } from "@/hooks/useUser";
 
 import Card from "@/components/ui/Card";
 import Input from "@/components/ui/Input";
@@ -16,6 +17,7 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const { fetchUser } = useUser();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -30,6 +32,7 @@ export default function LoginPage() {
 
       if (!res.ok) {
         const data = await res.json();
+        await fetchUser();
         throw new Error(data.message || "Login failed");
       }
 

@@ -1,26 +1,52 @@
-import bcrypt from "bcryptjs";
+import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
+import jwt from "jsonwebtoken";
 import User from "@/models/User";
 import { connectDB } from "@/lib/db";
-import { ok, fail } from "@/lib/response";
+
+export const runtime = "nodejs";
 
 export async function POST(req: Request) {
   const { name, email, password } = await req.json();
 
-  if (!name || !email || !password) return fail("All fields required");
+  if (!name || !email || !password) {
+    return NextResponse.json({ message: "All fields required" }, { status: 400 });
+  }
 
   await connectDB();
 
   const exists = await User.findOne({ email });
-  if (exists) return fail("Email already exists");
+  if (exists) {
+    return NextResponse.json({ message: "Email already exists" }, { status: 400 });
+  }
 
-  const hashed = await bcrypt.hash(password, 10);
-
-  await User.create({
+  // ✅ DO NOT HASH HERE
+  const user = await User.create({
     name,
     email,
-    password: hashed,
+    password,
     role: "user",
   });
 
-  return ok({ message: "Account created" });
+  const token = jwt.sign(
+    { id: user._id, role: user.role },
+    process.env.JWT_SECRET!,
+    { expiresIn: "7d" }
+  );
+
+  // ✅ FIXED COOKIE USAGE
+  const cookieStore = await cookies();
+  cookieStore.set("token", token, {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+    path: "/",
+    maxAge: 60 * 60 * 24 * 7,
+  });
+
+  return NextResponse.json({
+    name: user.name,
+    email: user.email,
+    role: user.role,
+  });
 }
