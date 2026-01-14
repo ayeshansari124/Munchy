@@ -23,23 +23,22 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
-      const res = await fetch("/api/auth/register", {
+     const res = await fetch("/api/auth/register", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
-  credentials: "include",
   body: JSON.stringify({ name, email, password }),
 });
 
-if (!res.ok) {
-  const text = await res.text();
-  throw new Error(text || "Registration failed");
-}
-
 const data = await res.json();
 
+if (!res.ok) {
+  toast.error(data.message || "Registration failed");
+  return;
+}
 
-      toast.success("Account created!");
-      router.push("/");
+toast.success("Account created! Please login.");
+router.push("/login");
+
     } catch (err: any) {
       toast.error(err.message);
     } finally {

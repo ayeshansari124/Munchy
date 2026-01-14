@@ -82,7 +82,7 @@ export default function CartPage() {
         total={total}
         onPay={() => {
           if (!user) {
-            router.push("/login");
+            router.push("/register");
             return;
           }
 

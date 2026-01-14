@@ -1,28 +1,23 @@
-import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
-import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
 import User from "@/models/User";
 import { connectDB } from "@/lib/db";
-
-export const runtime = "nodejs";
+import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
-    const { name, email, password } = body;
+    const { name, email, password } = await req.json();
 
     if (!name || !email || !password) {
       return NextResponse.json(
-        { message: "All fields required" },
+        { message: "All fields are required" },
         { status: 400 }
       );
     }
 
-    if (!process.env.JWT_SECRET) {
-      console.error("JWT_SECRET missing");
+    if (password.length < 6) {
       return NextResponse.json(
-        { message: "Server misconfigured" },
-        { status: 500 }
+        { message: "Password must be at least 6 characters" },
+        { status: 400 }
       );
     }
 
@@ -32,39 +27,24 @@ export async function POST(req: Request) {
     if (exists) {
       return NextResponse.json(
         { message: "Email already exists" },
-        { status: 400 }
+        { status: 409 }
       );
     }
 
-    const user = await User.create({
+    await User.create({
       name,
       email,
-      password, // hashed by schema
+      password,
       role: "user",
     });
 
-    const token = jwt.sign(
-      { id: user._id, role: user.role },
-      process.env.JWT_SECRET,
-      { expiresIn: "7d" }
+    return NextResponse.json(
+      { message: "Account created successfully" },
+      { status: 201 }
     );
-
-    const cookieStore = await cookies();
-    cookieStore.set("token", token, {
-      httpOnly: true,
-      sameSite: "lax",
-      secure: true,
-      path: "/",
-      maxAge: 60 * 60 * 24 * 7,
-    });
-
-    return NextResponse.json({
-      name: user.name,
-      email: user.email,
-      role: user.role,
-    });
-  } catch (err) {
+  } catch (err: any) {
     console.error("REGISTER ERROR:", err);
+
     return NextResponse.json(
       { message: "Internal server error" },
       { status: 500 }
